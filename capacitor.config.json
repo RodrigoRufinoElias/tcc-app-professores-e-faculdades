@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "faculdades_e_professores",
+	"webDir": "www",
+	"bundledWebRuntime": false
+}

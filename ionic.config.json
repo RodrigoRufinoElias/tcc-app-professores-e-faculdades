@@ -1,0 +1,7 @@
+{
+  "name": "faculdades_e_professores",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
