@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { AuthenticationService } from '../seguranca/autenticacao.service';
 
@@ -9,9 +10,19 @@ import { AuthenticationService } from '../seguranca/autenticacao.service';
 })
 export class EmailVerificacaoPage implements OnInit {
 
-  constructor(public authService: AuthenticationService) { }
+  constructor(
+    private authService: AuthenticationService,
+    public router: Router
+  ) { }
 
   ngOnInit() {
   }
 
+  enviarEmailConfirmacao() {
+    this.authService.SendVerificationMail();
+  }
+
+  voltarLogin() {
+    this.router.navigate(['login']);
+  }
 }
