@@ -32,17 +32,17 @@ export class AuthenticationService {
     })
   }
 
-  // Login in with email/password
+  // Login com email/senha
   async SignIn(email, password) {
     return await this.ngFireAuth.signInWithEmailAndPassword(email, password)
   }
 
-  // Register user with email/password
+  // Cadastrar usuário com email/password
   RegisterUser(email, password) {
     return this.ngFireAuth.createUserWithEmailAndPassword(email, password)
   }
 
-  // Email verification when new user register
+  // Verificação de email quando cadastro de novo usuário
   SendVerificationMail() {
     return this.ngFireAuth.currentUser.then(u => u.sendEmailVerification())
     .then(() => {
@@ -50,29 +50,29 @@ export class AuthenticationService {
     })
   }
 
-  // Recover password
+  // Recuperação de senha
   PasswordRecover(passwordResetEmail) {
     return this.ngFireAuth.sendPasswordResetEmail(passwordResetEmail)
     .then(() => {
-      window.alert('Password reset email has been sent, please check your inbox.');
+      window.alert('O email de recuperação de senha foi enviado. Favor olhar a caixa de entrada.');
     }).catch((error) => {
       window.alert(error)
     })
   }
 
-  // Returns true when user is looged in
+  // Retorna true quando o usuário está logado
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
     return (user !== null && user.emailVerified !== false) ? true : false;
   }
 
-  // Returns true when user's email is verified
+  // Retorna true quando o email do usuário está verificado
   get isEmailVerified(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
     return (user.emailVerified !== false) ? true : false;
   }
 
-  // Sign in with Gmail
+  // Login com Gmail
   GoogleAuth() {
     return this.AuthLogin(new firebase.auth.GoogleAuthProvider());
   }
@@ -90,7 +90,7 @@ export class AuthenticationService {
     })
   }
 
-  // Store user in localStorage
+  // Guarda o usuário no localStorage
   SetUserData(user) {
     const userRef: AngularFirestoreDocument<any> = this.afStore.doc(`users/${user.uid}`);
     const userData: User = {
@@ -105,12 +105,11 @@ export class AuthenticationService {
     })
   }
 
-  // Sign-out
+  // Logout
   SignOut() {
     return this.ngFireAuth.signOut().then(() => {
       localStorage.removeItem('user');
       this.router.navigate(['login']);
     })
   }
-
 }
