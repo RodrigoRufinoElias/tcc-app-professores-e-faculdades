@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 
-import { FaculdadeService } from './faculdade.service';
+import { FaculdadeService } from '../services/faculdade.service';
 
 @Component({
   selector: 'app-faculdade',

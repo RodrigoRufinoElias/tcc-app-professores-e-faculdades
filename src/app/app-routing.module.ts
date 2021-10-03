@@ -36,22 +36,13 @@ const routes: Routes = [
     loadChildren: () => import('./email-verificacao/email-verificacao.module').then( m => m.EmailVerificacaoPageModule)
   },
   {
-    path: 'dashboard',
-    loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
+    path: 'selecao-perfil',
+    loadChildren: () => import('./selecao-perfil/selecao-perfil.module').then( m => m.SelecaoPerfilPageModule)
   },
   {
-    path: 'make-appointment',
-    loadChildren: () => import('./make-appointment/make-appointment.module').then( m => m.MakeAppointmentPageModule)
+    path: 'config-perfil',
+    loadChildren: () => import('./config-perfil/config-perfil.module').then( m => m.ConfigPerfilPageModule)
   },
-  {
-    path: 'edit-appointment/:id',
-    loadChildren: () => import('./edit-appointment/edit-appointment.module').then( m => m.EditAppointmentPageModule)
-  },  {
-    path: 'view-appointment',
-    loadChildren: () => import('./view-appointment/view-appointment.module').then( m => m.ViewAppointmentPageModule)
-  },
-
-
 ];
 
 @NgModule({

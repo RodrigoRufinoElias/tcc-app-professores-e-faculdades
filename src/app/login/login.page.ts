@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { timer } from 'rxjs';
 
 import { AuthenticationService } from '../seguranca/autenticacao.service';
+import { PerfilService } from '../services/perfil.service';
 
 @Component({
   selector: 'app-login',
@@ -12,8 +13,9 @@ import { AuthenticationService } from '../seguranca/autenticacao.service';
 export class LoginPage implements OnInit {
 
   constructor(
-    public authService: AuthenticationService,
-    public router: Router
+    private authService: AuthenticationService,
+    private perfilService: PerfilService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -24,7 +26,7 @@ export class LoginPage implements OnInit {
       .then(() => {
         timer(10).subscribe(() => {
           if(this.authService.isEmailVerified) {
-            this.router.navigate(['dashboard']);
+            this.perfilService.verificarPerfilExistente(email.value);
           } else {
             window.alert('Email não verificado')
             return false;

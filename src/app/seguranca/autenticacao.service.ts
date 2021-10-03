@@ -5,7 +5,6 @@ import { AngularFireAuth } from "@angular/fire/compat/auth";
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 
 import { User } from "../models/usuario.model";
-import { timer } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -70,6 +69,12 @@ export class AuthenticationService {
   get isEmailVerified(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
     return (user.emailVerified !== false) ? true : false;
+  }
+
+  // Retorna o email do usuário
+  get userEmail(): boolean {
+    const user = JSON.parse(localStorage.getItem('user'));
+    return user.email;
   }
 
   // Login com Gmail
