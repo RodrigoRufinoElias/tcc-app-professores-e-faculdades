@@ -25,6 +25,7 @@ export class PerfilService {
     this.getFaculdadeList();
   }
 
+  // TODO Apagar
   criarPerfilFakeAluno(aluno: Aluno) {
     return this.perfilAlunoListRef.push({
       id: aluno.id,
@@ -33,6 +34,7 @@ export class PerfilService {
     })
   }
 
+  // TODO Apagar
   criarPerfilFakeProfessor(prof: Professor) {
     return this.perfilProfessorListRef.push({
       id: prof.id,
@@ -41,6 +43,7 @@ export class PerfilService {
     })
   }
 
+  // TODO Apagar
   criarPerfilFakeFaculdade(fac: Faculdade) {
     return this.perfilFaculdadeListRef.push({
       id: fac.id,

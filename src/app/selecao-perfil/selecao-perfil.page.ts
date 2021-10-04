@@ -21,6 +21,7 @@ export class SelecaoPerfilPage implements OnInit {
     this.perfilService.verificarPerfilExistente('faculdade.nome@teste.com');
   }
 
+  // TODO Apagar
   criarPerfilFakeAluno() {
     this.perfilService.criarPerfilFakeAluno({
       id: 2,
@@ -31,6 +32,7 @@ export class SelecaoPerfilPage implements OnInit {
     }).catch(error => console.log(error));
   }
 
+  // TODO Apagar
   criarPerfilFakeProfessor() {
     this.perfilService.criarPerfilFakeProfessor({
       id: 2,
@@ -41,6 +43,7 @@ export class SelecaoPerfilPage implements OnInit {
     }).catch(error => console.log(error));
   }
 
+  // TODO Apagar
   criarPerfilFakeFaculdade() {
     this.perfilService.criarPerfilFakeFaculdade({
       id: 1,

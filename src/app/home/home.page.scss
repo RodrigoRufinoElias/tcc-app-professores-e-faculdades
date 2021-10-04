@@ -27,10 +27,19 @@
   }
 }
 
-.auth-form ion-grid,
-.auth-form ion-row {
-  height: 100%;
+.form ion-grid,
+.form ion-row {
+  height: 50%;
   justify-content: center;
+}
+
+.form .logo {
+  text-align: center;
+  padding-top: 20px;
+
+  ion-icon {
+    font-size: 64px;
+  }
 }
 
 .already {

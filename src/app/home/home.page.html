@@ -1,19 +1,27 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>
-      App Professores e Faculdades
+      Home
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="auth-form">
+<ion-content class="form">
   <ion-grid>
+    <ion-row>
+      <ion-col class="logo" size="12">
+        <ion-icon name="people-outline"></ion-icon>
+        <br>
+        Professores e Faculdades
+      </ion-col>
+    </ion-row>
+
     <ion-row>
       <ion-col class="ion-align-self-center">
         <ion-button [routerLink]="['/registro']" expand="block" color="primary">Cadastrar</ion-button>
         <span class="divider line one-line">ou</span>
         <span class="already">Já possui cadastro?</span>
-        <ion-button [routerLink]="['/login']" expand="block" color="danger">Login</ion-button>
+        <ion-button [routerLink]="['/login']" expand="block" color="success">Login</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>
