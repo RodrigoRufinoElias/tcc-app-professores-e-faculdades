@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
+import { AuthGuard } from './seguranca/auth.guard';
+
 const routes: Routes = [
   {
     path: 'home',
@@ -12,20 +14,8 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'professor',
-    loadChildren: () => import('./professor/professor.module').then( m => m.ProfessorPageModule)
-  },
-  {
-    path: 'aluno',
-    loadChildren: () => import('./aluno/aluno.module').then( m => m.AlunoPageModule)
-  },
-  {
     path: 'login',
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
-  },
-  {
-    path: 'faculdade',
-    loadChildren: () => import('./faculdade/faculdade.module').then( m => m.FaculdadePageModule)
   },
   {
     path: 'registro',
@@ -37,11 +27,28 @@ const routes: Routes = [
   },
   {
     path: 'selecao-perfil',
-    loadChildren: () => import('./selecao-perfil/selecao-perfil.module').then( m => m.SelecaoPerfilPageModule)
+    loadChildren: () => import('./selecao-perfil/selecao-perfil.module').then( m => m.SelecaoPerfilPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'config-perfil',
-    loadChildren: () => import('./config-perfil/config-perfil.module').then( m => m.ConfigPerfilPageModule)
+    loadChildren: () => import('./config-perfil/config-perfil.module').then( m => m.ConfigPerfilPageModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'professor',
+    loadChildren: () => import('./professor/professor.module').then( m => m.ProfessorPageModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'aluno',
+    loadChildren: () => import('./aluno/aluno.module').then( m => m.AlunoPageModule),
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'faculdade',
+    loadChildren: () => import('./faculdade/faculdade.module').then( m => m.FaculdadePageModule),
+    canActivate: [AuthGuard]
   },
 ];
 

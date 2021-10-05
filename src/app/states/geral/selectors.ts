@@ -10,6 +10,11 @@ export const selectIsLoading = createSelector(
   (c) => c.isLoading,
 );
 
+export const selectIsLoggedIn = createSelector(
+  configuracaoGeralState,
+  (c) => c.isLoggedIn,
+);
+
 export const selectMensagemDeErro = createSelector(
   configuracaoGeralState,
   (c) => c.mensagemDeErro,

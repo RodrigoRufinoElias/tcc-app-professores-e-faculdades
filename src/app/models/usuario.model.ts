@@ -5,3 +5,9 @@ export interface User {
    photoURL: string;
    emailVerified: boolean;
 }
+
+export enum TipoUsuario {
+  ALUNO = "A",
+  FACULDADE = "F",
+  PROFESSOR = "P",
+}

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
 
 import { PerfilService } from '../services/perfil.service';
-import { Aluno } from '../models/aluno.model';
+import * as Actions from '../states/geral/actions';
 
 @Component({
   selector: 'app-selecao-perfil',
@@ -12,13 +13,16 @@ export class SelecaoPerfilPage implements OnInit {
 
   perfis = [];
 
-  constructor(private perfilService: PerfilService) { }
+  constructor(
+    private store: Store<any>,
+    private perfilService: PerfilService
+  ) { }
 
   ngOnInit() {}
 
   obterPerfil() {
     // this.perfilService.obterPerfil();
-    this.perfilService.verificarPerfilExistente('faculdade.nome@teste.com');
+    this.store.dispatch(Actions.verificarPerfilExistente({ email: 'faculdade.nome@teste.com' }));
   }
 
   // TODO Apagar
