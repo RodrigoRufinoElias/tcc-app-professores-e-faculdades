@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-back-button defaultHref="home"></ion-back-button>
     </ion-buttons>
     <ion-title>Login</ion-title>
   </ion-toolbar>
@@ -32,7 +32,9 @@
 
           <ion-row>
             <ion-col>
-            <ion-button type="submit" (click)="logIn(email, password)" expand="block">Login</ion-button>
+              <ion-button type="submit" (click)="logIn(email, password)" expand="block">
+                Login
+              </ion-button>
             </ion-col>
           </ion-row>
         </form>

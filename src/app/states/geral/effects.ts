@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { tap, take } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 import * as ConfiguracaoGeralActions from './actions';
 import { PerfilService } from 'src/app/services/perfil.service';
@@ -12,7 +13,8 @@ export class ConfiguracaoGeralEffects {
   constructor(
     private actions$: Actions,
     private store: Store<any>,
-    private perfilService: PerfilService
+    private perfilService: PerfilService,
+    private router: Router
   ) {}
 
   verificarPerfilExistente$ = createEffect(
@@ -36,8 +38,9 @@ export class ConfiguracaoGeralEffects {
                       this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false}));
                       this.store.dispatch(ConfiguracaoGeralActions.setPerfil({emailLogado: email, tipoUsuarioLogado: TipoUsuario.FACULDADE}));
                     } else {
-                      console.log('Não achou nada');
                       this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false}));
+                      this.store.dispatch(ConfiguracaoGeralActions.setPerfil({emailLogado: email, tipoUsuarioLogado: null}));
+                      this.router.navigate(['selecao-perfil']);
                     }
                   });
                 }

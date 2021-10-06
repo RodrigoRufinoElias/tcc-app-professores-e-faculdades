@@ -22,5 +22,10 @@ export const selectMensagemDeErro = createSelector(
 
 export const selectPerfil = createSelector(
   configuracaoGeralState,
-  (c) => { c.emailLogado, c.tipoUsuarioLogado },
+  (c) => {
+    return {
+      emailLogado: c.emailLogado,
+      tipoUsuarioLogado: c.tipoUsuarioLogado
+    }
+  },
 );

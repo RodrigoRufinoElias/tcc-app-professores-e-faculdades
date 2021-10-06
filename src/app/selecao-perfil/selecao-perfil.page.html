@@ -1,20 +1,36 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
     <ion-title>Selecionar Perfil</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-button (click)="obterPerfil()" expand="block" fill="clear" shape="round">
-    Obter Perfil
-  </ion-button>
-  <ion-button (click)="criarPerfilFakeAluno()" expand="block" fill="clear" shape="round">
-    Criar Perfil Aluno
-  </ion-button>
-  <ion-button (click)="criarPerfilFakeProfessor()" expand="block" fill="clear" shape="round">
-    Criar Perfil Professor
-  </ion-button>
-  <ion-button (click)="criarPerfilFakeFaculdade()" expand="block" fill="clear" shape="round">
-    Criar Perfil Faculdade
-  </ion-button>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col>
+        <ion-button (click)="configPerfilAluno()" expand="block" color="primary">
+          Aluno
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-button (click)="configPerfilFaculdade()" expand="block" color="primary">
+          Faculdade
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-button (click)="configPerfilProfessor()" expand="block" color="primary">
+          Professor
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

@@ -60,6 +60,12 @@ export class AppComponent {
   }
 
   async dismissLoading() {
-    await this.loading.dismiss();
+    await this.loading.dismiss().finally(async () => {
+      this.loading = await this.loadingController.create({
+        cssClass: 'loadingSpinner',
+        spinner: 'bubbles',
+        message: 'Aguarde...'
+      });
+    });
   }
 }

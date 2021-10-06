@@ -1,9 +1,36 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>config-perfil</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="selecao-perfil"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ titulo }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-grid>
+    <form #formAluno *ngIf="tipoPerfil === 'aluno'">
+      <ion-item lines="full">
+        <ion-label position="floating">Email Registrado no Login</ion-label>
+        <ion-input type="text" #email value="{{ emailUsuario }}" disabled></ion-input>
+      </ion-item>
 
+      <ion-item lines="full">
+        <ion-label position="floating">Nome Completo</ion-label>
+        <ion-input type="text" #nomeAluno required></ion-input>
+      </ion-item>
+
+
+
+      <br>
+
+      <ion-row>
+        <ion-col>
+          <ion-button type="submit" (click)="salvarDadosAluno(email, nomeAluno)" expand="block">
+            Salvar Dados
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+  </ion-grid>
 </ion-content>

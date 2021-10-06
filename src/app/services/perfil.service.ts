@@ -20,9 +20,9 @@ export class PerfilService {
     private authService: AuthenticationService,
     private db: AngularFireDatabase
   ) {
-    this.getAlunoList();
-    this.getProfessorList();
-    this.getFaculdadeList();
+    this.listarAlunos();
+    this.listarProfessores();
+    this.listarFaculdades();
   }
 
   // TODO Apagar
@@ -53,32 +53,6 @@ export class PerfilService {
     })
   }
 
-  verificarPerfilExistente(email: string) {
-    this.procurarAluno(email).snapshotChanges().subscribe(res => {
-      console.log('procurarAluno', res.length);
-
-      if(res.length >= 1) {
-        console.log('Achou Aluno');
-      } else {
-        this.procurarProfessor(email).snapshotChanges().subscribe(res => {
-          console.log('procurarProfessor', res.length);
-          if(res.length >= 1) {
-            console.log('Achou Professor');
-          } else {
-            this.procurarFaculdade(email).snapshotChanges().subscribe(res => {
-              console.log('procurarFaculdade', res.length);
-              if(res.length >= 1) {
-                console.log('Achou Faculdade');
-              } else {
-                console.log('Não achou nada');
-              }
-            });
-          }
-        });
-      }
-    });
-  }
-
   procurarAluno(email: string) {
     this.perfilAlunoListRef = this.db.list('/aluno', ref => ref.orderByChild('email').equalTo(email));
     return this.perfilAlunoListRef;
@@ -94,17 +68,17 @@ export class PerfilService {
     return this.perfilAlunoListRef;
   }
 
-  getAlunoList() {
+  listarAlunos() {
     this.perfilAlunoListRef = this.db.list('/aluno');
     return this.perfilAlunoListRef;
   }
 
-  getProfessorList() {
+  listarProfessores() {
     this.perfilProfessorListRef = this.db.list('/professor');
     return this.perfilProfessorListRef;
   }
 
-  getFaculdadeList() {
+  listarFaculdades() {
     this.perfilFaculdadeListRef = this.db.list('/faculdade');
     return this.perfilFaculdadeListRef;
   }
