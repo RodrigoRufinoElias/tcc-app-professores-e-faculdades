@@ -1,0 +1,16 @@
+ion-toolbar {
+  padding-top: 5%;
+}
+
+ion-list {
+  min-height: 200px;
+  max-height: 200px;
+  overflow: scroll;
+}
+
+.botao-salvar {
+  position: absolute;
+  bottom: 20px;
+  width: 96%;
+  margin: 0% 2%;
+}

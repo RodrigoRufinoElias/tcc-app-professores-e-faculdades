@@ -7,6 +7,8 @@ import { IonicModule } from '@ionic/angular';
 import { ConfigPerfilPageRoutingModule } from './config-perfil-routing.module';
 
 import { ConfigPerfilPage } from './config-perfil.page';
+import { ModalListasComponent } from './modal-listas/modal-listas.component';
+import { FiltroPipe } from './modal-listas/filtro.pipe';
 
 @NgModule({
   imports: [
@@ -15,6 +17,6 @@ import { ConfigPerfilPage } from './config-perfil.page';
     IonicModule,
     ConfigPerfilPageRoutingModule
   ],
-  declarations: [ConfigPerfilPage]
+  declarations: [ConfigPerfilPage, ModalListasComponent, FiltroPipe]
 })
 export class ConfigPerfilPageModule {}

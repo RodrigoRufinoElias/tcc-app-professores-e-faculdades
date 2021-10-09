@@ -8,29 +8,53 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid>
-    <form #formAluno *ngIf="tipoPerfil === 'aluno'">
-      <ion-item lines="full">
-        <ion-label position="floating">Email Registrado no Login</ion-label>
-        <ion-input type="text" #email value="{{ emailUsuario }}" disabled></ion-input>
-      </ion-item>
+  <form #formAluno *ngIf="tipoPerfil === 'aluno'">
+    <ion-item lines="full">
+      <ion-label position="floating">Email Registrado no Login</ion-label>
+      <ion-input type="text" #email value="{{ emailUsuario }}" disabled></ion-input>
+    </ion-item>
 
-      <ion-item lines="full">
-        <ion-label position="floating">Nome Completo</ion-label>
-        <ion-input type="text" #nomeAluno required></ion-input>
-      </ion-item>
+    <ion-item lines="full">
+      <ion-label position="floating">Nome Completo</ion-label>
+      <ion-input type="text" #nomeAluno required></ion-input>
+    </ion-item>
 
+    <br>
 
-
-      <br>
-
+    <ion-grid class="grid-lista">
       <ion-row>
         <ion-col>
-          <ion-button type="submit" (click)="salvarDadosAluno(email, nomeAluno)" expand="block">
-            Salvar Dados
+          <ion-button
+            [disabled]="listaFaculdades.length === 0"
+            color="secondary"
+            class="editar"
+            (click)="exibirModal()">
+            Editar suas Faculdades
           </ion-button>
         </ion-col>
       </ion-row>
-    </form>
-  </ion-grid>
+
+      <ion-row>
+        <ion-col>
+          <ion-list lines="full">
+            <ion-item *ngFor="let f of listaFaculdadesEscolhidas">
+              <ion-label>{{ f.nome }}</ion-label>
+            </ion-item>
+          </ion-list>
+
+          <ion-list *ngIf="listaFaculdadesEscolhidas.length === 0" lines="none">
+            <ion-item>
+              <ion-label class="text-align-center">
+                Nenhuma Faculdade escolhida
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-button expand="block" class="botao-salvar" type="submit" (click)="salvarDadosAluno(email, nomeAluno)">
+      Salvar Dados
+    </ion-button>
+  </form>
 </ion-content>

@@ -1,0 +1,22 @@
+form {
+  padding-top: 10%;
+
+  ion-grid.grid-lista {
+    width: 90%;
+
+    ion-button.editar {
+      width: 100%;
+    }
+  }
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.botao-salvar {
+  position: absolute;
+  bottom: 20px;
+  width: 96%;
+  margin: 0% 2%;
+}

@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 
 import { TipoUsuario } from 'src/app/models/usuario.model';
+import { Faculdade } from 'src/app/models/faculdade.model';
 
 export const isLoading = createAction(
   '[Configuração Geral] informa loading da tela.',
@@ -29,4 +30,9 @@ export const clearState = createAction('[Configuração Geral] limpa o state.');
 export const verificarPerfilExistente = createAction(
   '[Configuração Geral] verifica se o perfil existe na base.',
   props<{ email: string }>(),
+);
+
+export const salvarPerfilAluno = createAction(
+  '[Configuração Geral] salva o perfil do aluno.',
+  props<{ email: string, nome: string, listaFaculdades: Faculdade[] }>(),
 );

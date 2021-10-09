@@ -1,0 +1,57 @@
+<ion-toolbar>
+  <ion-searchbar
+    [(ngModel)]="textoFiltro"
+    mode="ios"
+    searchIcon="search-outline"
+    placeholder="Filtrar {{ tipoLista }}">
+  </ion-searchbar>
+</ion-toolbar>
+
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-label>Selecionar {{ tipoLista }}</ion-label>
+        <ion-list *ngIf="(listaCompletaAux | filtro: textoFiltro).length > 0" lines="full">
+          <ion-item *ngFor="let lc of listaCompletaAux | filtro: textoFiltro">
+            <ion-label>{{lc.nome }}</ion-label>
+            <ion-button color="success" fill="clear" (click)="addItem(lc.id)">
+              <ion-icon slot="icon-only" name="add"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-list>
+
+        <ion-list *ngIf="(listaCompletaAux | filtro: textoFiltro).length === 0" lines="none">
+          <ion-item>
+            <ion-label>Lista vazia</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-label>{{ tipoLista }} Selecionadas</ion-label>
+        <ion-list *ngIf="listaEscolhida.length > 0" lines="full">
+          <ion-item *ngFor="let le of listaEscolhida">
+            <ion-label>{{ le.nome }}</ion-label>
+            <ion-button color="danger" fill="clear" (click)="remItem(le.id)">
+              <ion-icon slot="icon-only" name="close"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-list>
+
+        <ion-list *ngIf="listaEscolhida.length === 0" lines="none">
+          <ion-item>
+            <ion-label>Lista vazia</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+    <ion-button class="botao-salvar" expand="block" (click)="fecharModal()">
+      Voltar
+    </ion-button>
+
+  </ion-grid>
+</ion-content>

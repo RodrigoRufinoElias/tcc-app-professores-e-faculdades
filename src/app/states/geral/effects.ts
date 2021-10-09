@@ -51,4 +51,16 @@ export class ConfiguracaoGeralEffects {
       ),
     { dispatch: false },
   );
+
+  salvarPerfilAluno$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(ConfiguracaoGeralActions.salvarPerfilAluno),
+        tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: true}))),
+        tap(({ email, nome, listaFaculdades }) => {
+          this.perfilService.salvarPerfilAluno(email, nome, listaFaculdades);
+        }),
+      ),
+    { dispatch: false },
+  );
 }
