@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, ToastController } from '@ionic/angular';
+
+import * as ConfiguracaoGeralActions from './states/geral/actions';
 
 import {
   selectIsLoading,
@@ -24,7 +26,8 @@ export class AppComponent {
 
   constructor(
     private store: Store<any>,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private toastController: ToastController,
   ) {}
 
   async ngOnInit() {
@@ -46,11 +49,25 @@ export class AppComponent {
       select(selectMensagemDeErro),
     );
 
+    this.initLoading();
+    this.initToast();
+  }
+
+  initLoading() {
     this.isLoading$.subscribe((isLoading) => {
       if(isLoading) {
         this.presentLoading();
       } else {
         this.dismissLoading();
+      }
+    });
+  }
+
+  initToast() {
+    this.mensagemDeErroDoSistema$.subscribe((msg) => {
+      if(msg != undefined) {
+        this.presentToast(msg);
+        this.store.dispatch(ConfiguracaoGeralActions.limpaMsgDeErro());
       }
     });
   }
@@ -67,5 +84,13 @@ export class AppComponent {
         message: 'Aguarde...'
       });
     });
+  }
+
+  async presentToast(msg: string) {
+    const toast = await this.toastController.create({
+      message: msg,
+      duration: 2000
+    });
+    toast.present();
   }
 }
