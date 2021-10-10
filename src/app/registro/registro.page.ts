@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 
 import { AuthenticationService } from '../seguranca/autenticacao.service';
+import * as ConfiguracaoGeralActions from '../states/geral/actions';
 
 @Component({
   selector: 'app-registro',
@@ -12,7 +14,8 @@ export class RegistroPage implements OnInit {
 
   constructor(
     public authService: AuthenticationService,
-    public router: Router
+    public router: Router,
+    private store: Store
   ) { }
 
   ngOnInit(){}
@@ -23,7 +26,9 @@ export class RegistroPage implements OnInit {
         this.authService.SendVerificationMail()
         this.router.navigate(['email-verificacao']);
       }).catch((error) => {
-        window.alert(error.message)
+        this.store.dispatch(ConfiguracaoGeralActions.setMsgDeErro(
+          { mensagemDeErro: error.message}
+        ));
       })
   }
 

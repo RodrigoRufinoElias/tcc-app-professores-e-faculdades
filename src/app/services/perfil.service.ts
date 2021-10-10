@@ -18,6 +18,7 @@ export class PerfilService {
   perfilProfessorListRef: AngularFireList<any>;
   perfilFaculdadeListRef: AngularFireList<any>;
   relacaoAlunoFaculdadeListRef: AngularFireList<any>;
+  relacaoProfessorFaculdadeListRef: AngularFireList<any>;
   perfilRef: AngularFireObject<any>;
 
   constructor(
@@ -29,6 +30,7 @@ export class PerfilService {
     this.listarProfessores();
     this.listarFaculdades();
     this.listarRelacaoAlunoFaculdade();
+    this.listarRelacaoProfessorFaculdade();
   }
 
   // TODO Apagar
@@ -85,6 +87,11 @@ export class PerfilService {
     return this.relacaoAlunoFaculdadeListRef;
   }
 
+  listarRelacaoProfessorFaculdade() {
+    this.relacaoProfessorFaculdadeListRef = this.db.list(Entidades.PROFESSOR_FACULDADE);
+    return this.relacaoAlunoFaculdadeListRef;
+  }
+
   salvarPerfilAluno(email: string, nome: string, listaFaculdades: Faculdade[]) {
     // Recupera o último Perfil Aluno criado
     this.db.list(Entidades.ALUNO, ref => ref.orderByChild('id').limitToLast(1)).snapshotChanges().pipe(take(1)).subscribe(res => {
@@ -92,6 +99,7 @@ export class PerfilService {
       a['$key'] = res[0].key;
       const proxId = (a as Aluno).id + 1;
 
+      // Cria o perfil do aluno
       this.perfilAlunoListRef.push({
         id: proxId,
         nome: nome,
@@ -106,12 +114,50 @@ export class PerfilService {
     });
   }
 
-  salvarPerfilFaculdade() {
+  salvarPerfilFaculdade(email: string, nome: string, siteOficial: string, listaProfessores: Professor[]) {
+    // Recupera o último Perfil Faculdade criado
+    this.db.list(Entidades.FACULDADE, ref => ref.orderByChild('id').limitToLast(1)).snapshotChanges().pipe(take(1)).subscribe(res => {
+      let a = res[0].payload.toJSON();
+      a['$key'] = res[0].key;
+      const proxId = (a as Faculdade).id + 1;
 
+      // Cria o perfil do Faculdade
+      this.perfilFaculdadeListRef.push({
+        id: proxId,
+        nome,
+        email,
+        siteOficial
+      });
+
+      this.limparRelacoesDaFaculdadeESalvar(proxId, listaProfessores);
+    },
+    (error) => console.log('error', error),
+    () => {
+      this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false}))
+    });
   }
 
-  salvarPerfilProfessor() {
+  salvarPerfilProfessor(email: string, nome: string, listaFaculdades: Faculdade[]) {
+    // Recupera o último Perfil Professor criado
+    this.db.list(Entidades.PROFESSOR, ref => ref.orderByChild('id').limitToLast(1)).snapshotChanges().pipe(take(1)).subscribe(res => {
+      let a = res[0].payload.toJSON();
+      a['$key'] = res[0].key;
+      const proxId = (a as Professor).id + 1;
 
+      // Cria o perfil do Professor
+      this.perfilProfessorListRef.push({
+        id: proxId,
+        nome: nome,
+        email: email
+      });
+
+      this.limparRelacoesDoProfessorESalvar(proxId, listaFaculdades);
+      this.limparRelacoesDoProfessorESalvar(1, listaFaculdades);
+    },
+    (error) => console.log('error', error),
+    () => {
+      this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false}))
+    });
   }
 
   // Remove as relações Aluno x Faculdade e cria as novas
@@ -124,6 +170,26 @@ export class PerfilService {
     );
   }
 
+  // Remove as relações Professor x Faculdade e cria as novas para Faculdade
+  limparRelacoesDaFaculdadeESalvar(idFaculdade: number, listaProfessores: Professor[]) {
+    this.db.list(Entidades.PROFESSOR_FACULDADE, ref => ref.orderByChild('idFaculdade').equalTo(idFaculdade))
+      .snapshotChanges().pipe(take(1)).subscribe(res =>
+        res.forEach(item => this.db.object(`/${Entidades.PROFESSOR_FACULDADE}/${item.key}`).remove())
+    ).add(() =>
+      listaProfessores.forEach((f) => this.salvarProfessorFaculdade(f.id, idFaculdade))
+    );
+  }
+
+  // Remove as relações Professor x Faculdade e cria as novas para Professor
+  limparRelacoesDoProfessorESalvar(idProfessor: number, listaFaculdades: Faculdade[]) {
+    this.db.list(Entidades.PROFESSOR_FACULDADE, ref => ref.orderByChild('idProfessor').equalTo(idProfessor))
+      .snapshotChanges().pipe(take(1)).subscribe(res =>
+        res.forEach(item => this.db.object(`/${Entidades.PROFESSOR_FACULDADE}/${item.key}`).remove())
+    ).add(() =>
+      listaFaculdades.forEach((f) => this.salvarProfessorFaculdade(idProfessor, f.id))
+    );
+  }
+
   salvarAlunoFaculdade(idAluno: number, idFaculdade: number) {
     let data = new Date();
     this.relacaoAlunoFaculdadeListRef.push({
@@ -133,8 +199,15 @@ export class PerfilService {
     });
   }
 
-  obterPerfil() {
-    console.log('email', this.authService.userEmail);
+  salvarProfessorFaculdade(idProfessor: number, idFaculdade: number) {
+    this.relacaoProfessorFaculdadeListRef.push({
+      idProfessor,
+      idFaculdade
+    });
+  }
 
+  obterPerfilAluno(email: string) {
+    // this.db.list(Entidades.ALUNO, ref => ref.orderByChild('email').equalTo(email))
+    //   .snapshotChanges().pipe(take(1)).subscribe(res => );
   }
 }

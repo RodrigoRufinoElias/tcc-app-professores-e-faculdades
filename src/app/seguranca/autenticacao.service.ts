@@ -3,8 +3,10 @@ import { Router } from "@angular/router";
 import firebase from "firebase/compat/app";
 import { AngularFireAuth } from "@angular/fire/compat/auth";
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
+import { Store } from '@ngrx/store';
 
 import { User } from "../models/usuario.model";
+import * as ConfiguracaoGeralActions from '../states/geral/actions';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +19,8 @@ export class AuthenticationService {
     public afStore: AngularFirestore,
     public ngFireAuth: AngularFireAuth,
     public router: Router,
-    public ngZone: NgZone
+    public ngZone: NgZone,
+    private store: Store,
   ) {
     this.ngFireAuth.authState.subscribe(user => {
       if (user) {
@@ -53,9 +56,15 @@ export class AuthenticationService {
   PasswordRecover(passwordResetEmail) {
     return this.ngFireAuth.sendPasswordResetEmail(passwordResetEmail)
     .then(() => {
-      window.alert('O email de recuperação de senha foi enviado. Favor olhar a caixa de entrada.');
+      this.store.dispatch(ConfiguracaoGeralActions.setMsgDeErro(
+        {
+          mensagemDeErro: "O email de recuperação de senha foi enviado. Favor olhar a caixa de entrada."
+        }
+      ));
     }).catch((error) => {
-      window.alert(error)
+      this.store.dispatch(ConfiguracaoGeralActions.setMsgDeErro(
+        { mensagemDeErro: error.message}
+      ));
     })
   }
 
@@ -91,7 +100,11 @@ export class AuthenticationService {
         })
       this.SetUserData(result.user);
     }).catch((error) => {
-      window.alert(error)
+      this.store.dispatch(ConfiguracaoGeralActions.setMsgDeErro(
+        {
+          mensagemDeErro: error.message
+        }
+      ));
     })
   }
 

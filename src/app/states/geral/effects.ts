@@ -27,20 +27,23 @@ export class ConfiguracaoGeralEffects {
             if(res.length >= 1) {
               this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false}));
               this.store.dispatch(ConfiguracaoGeralActions.setPerfil({emailLogado: email, tipoUsuarioLogado: TipoUsuario.ALUNO}));
+              this.irParaAluno();
             } else {
               this.perfilService.procurarProfessor(email).snapshotChanges().subscribe(res => {
                 if(res.length >= 1) {
                   this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false}));
                   this.store.dispatch(ConfiguracaoGeralActions.setPerfil({emailLogado: email, tipoUsuarioLogado: TipoUsuario.PROFESSOR}));
+                  this.irParaProfessor();
                 } else {
                   this.perfilService.procurarFaculdade(email).snapshotChanges().subscribe(res => {
                     if(res.length >= 1) {
                       this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false}));
                       this.store.dispatch(ConfiguracaoGeralActions.setPerfil({emailLogado: email, tipoUsuarioLogado: TipoUsuario.FACULDADE}));
+                      this.irParaFaculdade();
                     } else {
                       this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false}));
                       this.store.dispatch(ConfiguracaoGeralActions.setPerfil({emailLogado: email, tipoUsuarioLogado: null}));
-                      this.router.navigate(['selecao-perfil']);
+                      this.irParaSelecaoPerfil();
                     }
                   });
                 }
@@ -59,8 +62,54 @@ export class ConfiguracaoGeralEffects {
         tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: true}))),
         tap(({ email, nome, listaFaculdades }) => {
           this.perfilService.salvarPerfilAluno(email, nome, listaFaculdades);
+          this.store.dispatch(ConfiguracaoGeralActions.setPerfil({emailLogado: email, tipoUsuarioLogado: TipoUsuario.ALUNO}));
+          this.irParaAluno();
         }),
       ),
     { dispatch: false },
   );
+
+  salvarPerfilFaculdade$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(ConfiguracaoGeralActions.salvarPerfilFaculdade),
+        tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: true}))),
+        tap(({ email, nome, siteOficial, listaProfessores }) => {
+          this.perfilService.salvarPerfilFaculdade(email, nome, siteOficial, listaProfessores);
+          this.store.dispatch(ConfiguracaoGeralActions.setPerfil({emailLogado: email, tipoUsuarioLogado: TipoUsuario.FACULDADE}));
+          this.irParaFaculdade();
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  salvarPerfilProfessor$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(ConfiguracaoGeralActions.salvarPerfilProfessor),
+        tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: true}))),
+        tap(({ email, nome, listaFaculdades }) => {
+          this.perfilService.salvarPerfilProfessor(email, nome, listaFaculdades);
+          this.store.dispatch(ConfiguracaoGeralActions.setPerfil({emailLogado: email, tipoUsuarioLogado: TipoUsuario.PROFESSOR}));
+          this.irParaProfessor();
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  irParaSelecaoPerfil() {
+    this.router.navigate(['selecao-perfil']);
+  }
+
+  irParaAluno() {
+    this.router.navigate(['aluno']);
+  }
+
+  irParaFaculdade() {
+    this.router.navigate(['faculdade']);
+  }
+
+  irParaProfessor() {
+    this.router.navigate(['professor']);
+  }
 }

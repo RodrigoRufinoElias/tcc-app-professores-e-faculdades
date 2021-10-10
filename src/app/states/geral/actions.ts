@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 
 import { TipoUsuario } from 'src/app/models/usuario.model';
 import { Faculdade } from 'src/app/models/faculdade.model';
+import { Professor } from 'src/app/models/professor.model';
 
 export const isLoading = createAction(
   '[Configuração Geral] informa loading da tela.',
@@ -34,5 +35,15 @@ export const verificarPerfilExistente = createAction(
 
 export const salvarPerfilAluno = createAction(
   '[Configuração Geral] salva o perfil do aluno.',
+  props<{ email: string, nome: string, listaFaculdades: Faculdade[] }>(),
+);
+
+export const salvarPerfilFaculdade = createAction(
+  '[Configuração Geral] salva o perfil da faculdade.',
+  props<{ email: string, nome: string, siteOficial: string, listaProfessores: Professor[] }>(),
+);
+
+export const salvarPerfilProfessor = createAction(
+  '[Configuração Geral] salva o perfil do professor.',
   props<{ email: string, nome: string, listaFaculdades: Faculdade[] }>(),
 );

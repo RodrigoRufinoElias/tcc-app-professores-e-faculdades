@@ -8,6 +8,7 @@
 </ion-header>
 
 <ion-content>
+  <!-- Formulário para Perfil Aluno -->
   <form #formAluno *ngIf="tipoPerfil === 'aluno'">
     <ion-item lines="full">
       <ion-label position="floating">Email Registrado no Login</ion-label>
@@ -28,7 +29,7 @@
             [disabled]="listaFaculdades.length === 0"
             color="secondary"
             class="editar"
-            (click)="exibirModal()">
+            (click)="exibirModalFaculdades()">
             Editar suas Faculdades
           </ion-button>
         </ion-col>
@@ -54,6 +55,118 @@
     </ion-grid>
 
     <ion-button expand="block" class="botao-salvar" type="submit" (click)="salvarDadosAluno(email, nomeAluno)">
+      Salvar Dados
+    </ion-button>
+  </form>
+
+  <!-- Formulário para Perfil Faculdade -->
+  <form #formFaculdade *ngIf="tipoPerfil === 'faculdade'">
+    <ion-item lines="full">
+      <ion-label position="floating">Email Registrado no Login</ion-label>
+      <ion-input type="text" #email value="{{ emailUsuario }}" disabled></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Nome da Faculdade</ion-label>
+      <ion-input type="text" #nomeFaculdade required></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Site Oficial</ion-label>
+      <ion-input type="text" #site required></ion-input>
+    </ion-item>
+
+    <br>
+
+    <ion-grid class="grid-lista">
+      <ion-row>
+        <ion-col>
+          <ion-button
+            [disabled]="listaProfessores.length === 0"
+            color="secondary"
+            class="editar"
+            (click)="exibirModalProfessores()">
+            Editar corpo docente
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-list lines="full">
+            <ion-item *ngFor="let f of listaProfessoresEscolhidos">
+              <ion-label>{{ f.nome }}</ion-label>
+            </ion-item>
+          </ion-list>
+
+          <ion-list *ngIf="listaProfessoresEscolhidos.length === 0" lines="none">
+            <ion-item>
+              <ion-label class="text-align-center">
+                Nenhum Professor Selecionado
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-button expand="block" class="botao-salvar" type="submit" (click)="salvarDadosFaculdade(email, nomeFaculdade, site)">
+      Salvar Dados
+    </ion-button>
+  </form>
+
+  <!-- Formulário para Perfil Professor -->
+  <form #formProfessor *ngIf="tipoPerfil === 'professor'">
+    <ion-item lines="full">
+      <ion-label position="floating">Email Registrado no Login</ion-label>
+      <ion-input type="text" #email value="{{ emailUsuario }}" disabled></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Nome Completo</ion-label>
+      <ion-input type="text" #nomeProfessor required></ion-input>
+    </ion-item>
+
+    <br>
+
+    <ion-grid class="grid-lista">
+      <ion-row>
+        <ion-col>
+          <ion-label class="msg-professor">*Faculdades onde exerce atividade</ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-button
+            [disabled]="listaFaculdades.length === 0"
+            color="secondary"
+            class="editar"
+            (click)="exibirModalFaculdades()">
+            Editar faculdades
+          </ion-button>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col>
+          <ion-list lines="full">
+            <ion-item *ngFor="let f of listaFaculdadesEscolhidas">
+              <ion-label>{{ f.nome }}</ion-label>
+            </ion-item>
+          </ion-list>
+
+          <ion-list *ngIf="listaFaculdadesEscolhidas.length === 0" lines="none">
+            <ion-item>
+              <ion-label class="text-align-center">
+                Nenhuma Faculdade selecionada
+              </ion-label>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-button expand="block" class="botao-salvar" type="submit" (click)="salvarDadosProfessor(email, nomeProfessor)">
       Salvar Dados
     </ion-button>
   </form>
