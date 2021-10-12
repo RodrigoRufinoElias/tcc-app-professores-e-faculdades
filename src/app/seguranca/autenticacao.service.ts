@@ -81,7 +81,7 @@ export class AuthenticationService {
   }
 
   // Retorna o email do usuário
-  get userEmail(): boolean {
+  get userEmail(): string {
     const user = JSON.parse(localStorage.getItem('user'));
     return user.email;
   }

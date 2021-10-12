@@ -3,7 +3,6 @@ import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angula
 import { take } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 
-import { AuthenticationService } from '../seguranca/autenticacao.service';
 import { Aluno } from '../models/aluno.model';
 import { Professor } from '../models/professor.model';
 import { Faculdade } from '../models/faculdade.model';
@@ -22,9 +21,8 @@ export class PerfilService {
   perfilRef: AngularFireObject<any>;
 
   constructor(
-    private authService: AuthenticationService,
     private db: AngularFireDatabase,
-    private store: Store<any>,
+    private store: Store<any>
   ) {
     this.listarAlunos();
     this.listarProfessores();
@@ -33,38 +31,19 @@ export class PerfilService {
     this.listarRelacaoProfessorFaculdade();
   }
 
-  // TODO Apagar
-  criarPerfilFakeProfessor(prof: Professor) {
-    return this.perfilProfessorListRef.push({
-      id: prof.id,
-      nome: prof.nome,
-      email: prof.email
-    })
-  }
-
-  // TODO Apagar
-  criarPerfilFakeFaculdade(fac: Faculdade) {
-    return this.perfilFaculdadeListRef.push({
-      id: fac.id,
-      nome: fac.nome,
-      email: fac.email,
-      siteOficial: fac.siteOficial
-    })
-  }
-
   procurarAluno(email: string) {
     this.perfilAlunoListRef = this.db.list(Entidades.ALUNO, ref => ref.orderByChild('email').equalTo(email));
     return this.perfilAlunoListRef;
   }
 
   procurarProfessor(email: string) {
-    this.perfilAlunoListRef = this.db.list(Entidades.PROFESSOR, ref => ref.orderByChild('email').equalTo(email));
-    return this.perfilAlunoListRef;
+    this.perfilProfessorListRef = this.db.list(Entidades.PROFESSOR, ref => ref.orderByChild('email').equalTo(email));
+    return this.perfilProfessorListRef;
   }
 
   procurarFaculdade(email: string) {
-    this.perfilAlunoListRef = this.db.list(Entidades.FACULDADE, ref => ref.orderByChild('email').equalTo(email));
-    return this.perfilAlunoListRef;
+    this.perfilFaculdadeListRef = this.db.list(Entidades.FACULDADE, ref => ref.orderByChild('email').equalTo(email));
+    return this.perfilFaculdadeListRef;
   }
 
   listarAlunos() {
@@ -89,7 +68,7 @@ export class PerfilService {
 
   listarRelacaoProfessorFaculdade() {
     this.relacaoProfessorFaculdadeListRef = this.db.list(Entidades.PROFESSOR_FACULDADE);
-    return this.relacaoAlunoFaculdadeListRef;
+    return this.relacaoProfessorFaculdadeListRef;
   }
 
   salvarPerfilAluno(email: string, nome: string, listaFaculdades: Faculdade[]) {
@@ -204,10 +183,5 @@ export class PerfilService {
       idProfessor,
       idFaculdade
     });
-  }
-
-  obterPerfilAluno(email: string) {
-    // this.db.list(Entidades.ALUNO, ref => ref.orderByChild('email').equalTo(email))
-    //   .snapshotChanges().pipe(take(1)).subscribe(res => );
   }
 }

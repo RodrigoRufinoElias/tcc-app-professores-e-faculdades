@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
-import * as Actions from '../states/geral/actions';
-
 @Component({
   selector: 'app-selecao-perfil',
   templateUrl: './selecao-perfil.page.html',
@@ -11,10 +9,7 @@ import * as Actions from '../states/geral/actions';
 })
 export class SelecaoPerfilPage implements OnInit {
 
-  perfis = [];
-
   constructor(
-    private store: Store<any>,
     private router: Router
   ) { }
 

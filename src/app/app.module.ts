@@ -16,7 +16,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { environment } from 'src/environments/environment';
 import { AuthGuard } from './seguranca/auth.guard';
 import * as ConfigReducers from './states/geral/reducers';
+import * as AlunoReducers from './states/aluno/reducers';
 import { ConfiguracaoGeralEffects } from './states/geral/effects';
+import { AlunoEffects } from './states/aluno/effects';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,11 @@ import { ConfiguracaoGeralEffects } from './states/geral/effects';
     EffectsModule.forRoot(),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     StoreModule.forFeature(ConfigReducers.configuracaoGeralFeatureKey, ConfigReducers.reducers),
-    EffectsModule.forFeature([ConfiguracaoGeralEffects])
+    StoreModule.forFeature(AlunoReducers.alunoFeatureKey, AlunoReducers.reducers),
+    EffectsModule.forFeature([
+      ConfiguracaoGeralEffects,
+      AlunoEffects
+    ])
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

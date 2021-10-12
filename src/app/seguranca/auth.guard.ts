@@ -13,8 +13,8 @@ import * as ConfiguracaoGeralActions from '../states/geral/actions';
 export class AuthGuard implements CanActivate {
 
   constructor(
-    public authService: AuthenticationService,
-    public router: Router,
+    private authService: AuthenticationService,
+    private router: Router,
     private store: Store
   ){ }
 

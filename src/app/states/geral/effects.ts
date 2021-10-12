@@ -3,6 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { timer } from 'rxjs';
 
 import * as ConfiguracaoGeralActions from './actions';
 import { PerfilService } from 'src/app/services/perfil.service';
@@ -63,7 +64,7 @@ export class ConfiguracaoGeralEffects {
         tap(({ email, nome, listaFaculdades }) => {
           this.perfilService.salvarPerfilAluno(email, nome, listaFaculdades);
           this.store.dispatch(ConfiguracaoGeralActions.setPerfil({emailLogado: email, tipoUsuarioLogado: TipoUsuario.ALUNO}));
-          this.irParaAluno();
+          timer(1000).subscribe(() => this.irParaAluno());
         }),
       ),
     { dispatch: false },
@@ -77,7 +78,7 @@ export class ConfiguracaoGeralEffects {
         tap(({ email, nome, siteOficial, listaProfessores }) => {
           this.perfilService.salvarPerfilFaculdade(email, nome, siteOficial, listaProfessores);
           this.store.dispatch(ConfiguracaoGeralActions.setPerfil({emailLogado: email, tipoUsuarioLogado: TipoUsuario.FACULDADE}));
-          this.irParaFaculdade();
+          timer(1000).subscribe(() => this.irParaFaculdade());
         }),
       ),
     { dispatch: false },
@@ -91,7 +92,7 @@ export class ConfiguracaoGeralEffects {
         tap(({ email, nome, listaFaculdades }) => {
           this.perfilService.salvarPerfilProfessor(email, nome, listaFaculdades);
           this.store.dispatch(ConfiguracaoGeralActions.setPerfil({emailLogado: email, tipoUsuarioLogado: TipoUsuario.PROFESSOR}));
-          this.irParaProfessor();
+          timer(1000).subscribe(() => this.irParaProfessor());
         }),
       ),
     { dispatch: false },
