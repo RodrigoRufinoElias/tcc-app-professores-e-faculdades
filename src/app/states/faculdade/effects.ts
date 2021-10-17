@@ -4,13 +4,13 @@ import { Store } from '@ngrx/store';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
-import * as AlunoActions from './actions';
+import * as FaculdadeActions from './actions';
 import * as ConfiguracaoGeralActions from '../geral/actions';
 import { FaculdadeService } from 'src/app/services/faculdade.service';
 import { TipoUsuario } from 'src/app/models/usuario.model';
 
 @Injectable({ providedIn: 'root' })
-export class AlunoEffects {
+export class FaculdadeEffects {
   constructor(
     private actions$: Actions,
     private store: Store<any>,
@@ -21,7 +21,7 @@ export class AlunoEffects {
   getPerfilFaculdade$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(AlunoActions.getPerfilFaculdade),
+        ofType(FaculdadeActions.getPerfilFaculdade),
         tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: true}))),
         tap(() => {
           this.faculdadeService.obterPerfilFaculdade();
@@ -33,7 +33,7 @@ export class AlunoEffects {
   getPerfilFaculdadeSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(AlunoActions.getPerfilFaculdadeSuccess),
+        ofType(FaculdadeActions.getPerfilFaculdadeSuccess),
         tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false})))
       ),
     { dispatch: false },

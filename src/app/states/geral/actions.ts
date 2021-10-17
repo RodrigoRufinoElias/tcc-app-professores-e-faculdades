@@ -40,12 +40,12 @@ export const salvarPerfilAluno = createAction(
 
 export const salvarPerfilFaculdade = createAction(
   '[Configuração Geral] salva o perfil da faculdade.',
-  props<{ email: string, nome: string, siteOficial: string, listaProfessores: Professor[] }>(),
+  props<{ idFaculdade: number, email: string, nome: string, siteOficial: string, listaProfessores: Professor[] }>(),
 );
 
 export const salvarPerfilProfessor = createAction(
   '[Configuração Geral] salva o perfil do professor.',
-  props<{ email: string, nome: string, listaFaculdades: Faculdade[] }>(),
+  props<{ idProfessor: number, email: string, nome: string, listaFaculdades: Faculdade[] }>(),
 );
 
 export const logout = createAction('[Configuração Geral] Logout.');

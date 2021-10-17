@@ -2,17 +2,18 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { ModalController } from '@ionic/angular';
-import { map, mapTo, take } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { AngularFireList } from '@angular/fire/compat/database';
-import { combineLatest, timer } from 'rxjs';
+import { combineLatest } from 'rxjs';
 
-import { selectPerfil } from '../states/geral/selectors';
 import { PerfilService } from '../services/perfil.service';
 import { Faculdade } from '../models/faculdade.model';
 import { Professor } from '../models/professor.model';
 import { ModalListasComponent } from './modal-listas/modal-listas.component';
 import * as ConfiguracaoGeralActions from '../states/geral/actions';
 import { selectAluno } from '../states/aluno/selectors';
+import { selectFaculdade } from '../states/faculdade/selectors';
+import { selectProfessor } from '../states/professor/selectors';
 
 @Component({
   selector: 'app-config-perfil',
@@ -25,6 +26,7 @@ export class ConfigPerfilPage {
   id: number;
   titulo: string = '';
   nome: string = '';
+  siteOficial: string = '';
 
   listaFaculdades: Faculdade[] = [];
   listaFaculdadesEscolhidas: Faculdade[] = [];
@@ -57,6 +59,23 @@ export class ConfigPerfilPage {
     ).subscribe(res => this.nome = res.nome);
   }
 
+  recupararNomeFaculdadeESite() {
+    this.store.pipe(
+      take(1),
+      select(selectFaculdade),
+    ).subscribe(res => {
+      this.nome = res.nome;
+      this.siteOficial = res.siteOficial;
+    });
+  }
+
+  recupararNomeProfessor() {
+    this.store.pipe(
+      take(1),
+      select(selectProfessor),
+    ).subscribe(res => this.nome = res.nome);
+  }
+
   init() {
     if (this.tipoPerfil === 'aluno') {
       this.titulo = 'Dados do Aluno';
@@ -72,33 +91,45 @@ export class ConfigPerfilPage {
 
     } else if (this.tipoPerfil === 'faculdade') {
       this.titulo = 'Dados da Faculdade';
-
       let lista = this.perfilService.listarProfessores();
-      this.initListasProfessores(lista);
+
+      if (this.id) {
+        let listaProfessorFaculdade = this.perfilService.listarRelacaoProfessorFaculdadePorIdFaculdade(this.id);
+        this.recupararNomeFaculdadeESite();
+        this.initListasProfessores(lista, listaProfessorFaculdade);
+      } else {
+        this.initListasProfessores(lista);
+      }
 
     } else {
       this.titulo = 'Dados do Professor';
-
       let lista = this.perfilService.listarFaculdades();
-      this.initListasFaculdades(lista);
+
+      if (this.id) {
+        let listaProfessorFaculdade = this.perfilService.listarRelacaoProfessorFaculdadePorIdProfessor(this.id);
+        this.recupararNomeProfessor();
+        this.initListasFaculdades(lista, listaProfessorFaculdade);
+      } else {
+        this.initListasFaculdades(lista);
+      }
     }
   }
 
-  initListasFaculdades(lista: AngularFireList<any>, listaAlunoFaculdade?: AngularFireList<any>) {
-    if (listaAlunoFaculdade) {
+  initListasFaculdades(lista: AngularFireList<any>, listaRelacional?: AngularFireList<any>) {
+    if (listaRelacional) {
       combineLatest([
         lista.snapshotChanges().pipe(
           map(actions => this.perfilService.mapSnapshotChanges(actions))
         ),
-        listaAlunoFaculdade.snapshotChanges().pipe(
+        listaRelacional.snapshotChanges().pipe(
           map(actions => this.perfilService.mapSnapshotChanges(actions))
         )
       ]).pipe(
         take(1),
-        map(([listaCompleta, listaRelacional]) => {
+        map(([listaCompleta, listaRelacionalCompleta]) => {
           let listaEscolhidaAux = [];
 
-          listaRelacional.forEach(lr => {
+          listaRelacionalCompleta.forEach(lr => {
             const [l] = listaCompleta.filter((lc) => lc.id === lr.idFaculdade);
             listaEscolhidaAux.push(l);
           });
@@ -123,15 +154,43 @@ export class ConfigPerfilPage {
     }
   }
 
-  initListasProfessores(lista) {
-    lista.snapshotChanges().subscribe(res => {
-      this.listaProfessores = [];
-      res.forEach(item => {
-        let f = item.payload.toJSON();
-        f['$key'] = item.key;
-        this.listaProfessores.push(f as Professor);
+  initListasProfessores(lista: AngularFireList<any>, listaRelacional?: AngularFireList<any>) {
+    if (listaRelacional) {
+      combineLatest([
+        lista.snapshotChanges().pipe(
+          map(actions => this.perfilService.mapSnapshotChanges(actions))
+        ),
+        listaRelacional.snapshotChanges().pipe(
+          map(actions => this.perfilService.mapSnapshotChanges(actions))
+        )
+      ]).pipe(
+        take(1),
+        map(([listaCompleta, listaRelacionalCompleta]) => {
+          let listaEscolhidaAux = [];
+
+          listaRelacionalCompleta.forEach(lr => {
+            const [l] = listaCompleta.filter((lc) => lc.id === lr.idProfessor);
+            listaEscolhidaAux.push(l);
+          });
+
+          return {
+            lc: listaCompleta,
+            le: listaEscolhidaAux
+          }
+        })
+      ).subscribe(res => {
+        this.listaProfessores = res.lc;
+        this.listaProfessoresEscolhidos = res.le;
       });
-    });
+
+    } else {
+      lista.snapshotChanges().pipe(
+        map(actions => this.perfilService.mapSnapshotChanges(actions))
+      ).subscribe(res => {
+        this.listaProfessores = [];
+        this.listaProfessoresEscolhidos = res;
+      });
+    }
   }
 
   async exibirModalFaculdades() {
@@ -206,6 +265,7 @@ export class ConfigPerfilPage {
       this.store.dispatch(
         ConfiguracaoGeralActions.salvarPerfilFaculdade(
           {
+            idFaculdade: this.id,
             email: email.value,
             nome: nome.value,
             siteOficial: site.value,
@@ -227,6 +287,7 @@ export class ConfigPerfilPage {
       this.store.dispatch(
         ConfiguracaoGeralActions.salvarPerfilProfessor(
           {
+            idProfessor: this.id,
             email: email.value,
             nome: nome.value,
             listaFaculdades: this.listaFaculdadesEscolhidas

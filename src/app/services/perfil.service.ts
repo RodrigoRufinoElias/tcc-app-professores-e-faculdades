@@ -10,8 +10,12 @@ import { Faculdade } from '../models/faculdade.model';
 import { Entidades } from '../models/entidades.enum';
 import * as ConfiguracaoGeralActions from '../states/geral/actions';
 import * as AlunoActions from '../states/aluno/actions';
+import * as FaculdadeActions from '../states/faculdade/actions';
+import * as ProfessorActions from '../states/professor/actions';
 import { AuthenticationService } from '../seguranca/autenticacao.service';
 import { selectIdFirebaseAluno } from '../states/aluno/selectors';
+import { selectIdFirebaseFaculdade } from '../states/faculdade/selectors';
+import { selectIdFirebaseProfessor } from '../states/professor/selectors';
 
 @Injectable({
   providedIn: 'root'
@@ -93,6 +97,16 @@ export class PerfilService {
     return this.relacaoProfessorFaculdadeListRef;
   }
 
+  listarRelacaoProfessorFaculdadePorIdFaculdade(idFaculdade: number) {
+    this.relacaoProfessorFaculdadeListRef = this.db.list(Entidades.PROFESSOR_FACULDADE, ref => ref.orderByChild('idFaculdade').equalTo(idFaculdade));
+    return this.relacaoProfessorFaculdadeListRef;
+  }
+
+  listarRelacaoProfessorFaculdadePorIdProfessor(idProfessor: number) {
+    this.relacaoProfessorFaculdadeListRef = this.db.list(Entidades.PROFESSOR_FACULDADE, ref => ref.orderByChild('idProfessor').equalTo(idProfessor));
+    return this.relacaoProfessorFaculdadeListRef;
+  }
+
   salvarPerfilAluno(email: string, nome: string, listaFaculdades: Faculdade[]) {
     // Recupera o último Perfil Aluno criado
     this.db.list(Entidades.ALUNO, ref => ref.orderByChild('id').limitToLast(1)).snapshotChanges().pipe(take(1)).subscribe(res => {
@@ -115,7 +129,7 @@ export class PerfilService {
     });
   }
 
-  editarPerfilAluno(idAluno: number, email: string, nome: string, listaFaculdades: Faculdade[]) {
+  editarPerfilAluno(idAluno: number, nome: string, listaFaculdades: Faculdade[]) {
     let alunoRef;
 
     this.store.pipe(
@@ -157,6 +171,26 @@ export class PerfilService {
     });
   }
 
+  editarPerfilFaculdade(idFaculdade: number, nome: string, siteOficial: string, listaProfessores: Professor[]) {
+    let faculdadeRef;
+
+    this.store.pipe(
+      select(selectIdFirebaseFaculdade),
+      take(1)
+    ).subscribe((idFirebaseFaculdade) => {
+      faculdadeRef = this.db.object(`${Entidades.FACULDADE}/${idFirebaseFaculdade}`);
+
+      faculdadeRef.update({
+        nome,
+        siteOficial
+      });
+
+      this.store.dispatch(FaculdadeActions.getPerfilFaculdade());
+
+      this.limparRelacoesDaFaculdadeESalvar(idFaculdade, listaProfessores)
+    });
+  }
+
   salvarPerfilProfessor(email: string, nome: string, listaFaculdades: Faculdade[]) {
     // Recupera o último Perfil Professor criado
     this.db.list(Entidades.PROFESSOR, ref => ref.orderByChild('id').limitToLast(1)).snapshotChanges().pipe(take(1)).subscribe(res => {
@@ -172,11 +206,29 @@ export class PerfilService {
       });
 
       this.limparRelacoesDoProfessorESalvar(proxId, listaFaculdades);
-      this.limparRelacoesDoProfessorESalvar(1, listaFaculdades);
     },
     (error) => console.log('error', error),
     () => {
       this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false}))
+    });
+  }
+
+  editarPerfilProfessor(idProfessor: number, nome: string, listaFaculdades: Faculdade[]) {
+    let professorRef;
+
+    this.store.pipe(
+      select(selectIdFirebaseProfessor),
+      take(1)
+    ).subscribe((idFirebaseProfessor) => {
+      professorRef = this.db.object(`${Entidades.PROFESSOR}/${idFirebaseProfessor}`);
+
+      professorRef.update({
+        nome
+      });
+
+      this.store.dispatch(ProfessorActions.getPerfilProfessor());
+
+      this.limparRelacoesDoProfessorESalvar(idProfessor, listaFaculdades)
     });
   }
 

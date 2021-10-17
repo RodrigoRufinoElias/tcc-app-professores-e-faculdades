@@ -1,9 +1,37 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>professor</ion-title>
+    <ion-title>{{ titulo }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col class="logo" size="12">
+        <ion-icon name="people-outline"></ion-icon>
+        <br>
+        Professores e Faculdades
+      </ion-col>
+    </ion-row>
 
+    <ion-row>
+      <ion-col>
+        <ion-button (click)="comentariosAvaliacoes()" expand="block">
+          Verificar comentários e avaliações
+        </ion-button>
+
+        <br>
+
+        <ion-button (click)="editarDados()" expand="block">
+          Editar dados
+        </ion-button>
+
+        <br>
+
+        <ion-button (click)="logout()" expand="block">
+          Logout
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

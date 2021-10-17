@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
-import { FaculdadeService } from '../services/faculdade.service';
+import * as FaculdadeActions from '../states/faculdade/actions';
+import * as ConfiguracaoGeralActions from '../states/geral/actions';
+import { selectFaculdade } from '../states/faculdade/selectors';
+import { Faculdade } from '../models/faculdade.model';
 
 @Component({
   selector: 'app-faculdade',
@@ -10,12 +15,39 @@ import { FaculdadeService } from '../services/faculdade.service';
 })
 export class FaculdadePage implements OnInit {
 
+  faculdade$: Observable<Faculdade>;
+  titulo = 'App Professores e Faculdades';
+  idFaculdade: number;
+
   constructor(
-    private fb: FormBuilder,
-    private fs: FaculdadeService,
+    private store: Store<any>,
+    private router: Router
   ) { }
 
   ngOnInit() {
+    this.store.dispatch(FaculdadeActions.getPerfilFaculdade());
+
+    this.faculdade$ = this.store.pipe(
+      select(selectFaculdade),
+    );
+
+    this.faculdade$.subscribe((faculdade) => {
+      if(faculdade) {
+        this.titulo = `Olá, ${faculdade.nome}`
+        this.idFaculdade = faculdade.id
+      }
+    });
   }
 
+  comentariosAvaliacoes() {
+    // this.router.navigate(['faculdade/pesquisarProfessores']);
+  }
+
+  editarDados() {
+    this.router.navigate([`config-perfil/faculdade/${this.idFaculdade}`]);
+  }
+
+  logout() {
+    this.store.dispatch(ConfiguracaoGeralActions.logout());
+  }
 }

@@ -17,8 +17,12 @@ import { environment } from 'src/environments/environment';
 import { AuthGuard } from './seguranca/auth.guard';
 import * as ConfigReducers from './states/geral/reducers';
 import * as AlunoReducers from './states/aluno/reducers';
+import * as ProfessorReducers from './states/professor/reducers';
+import * as FaculdadeReducers from './states/faculdade/reducers';
 import { ConfiguracaoGeralEffects } from './states/geral/effects';
 import { AlunoEffects } from './states/aluno/effects';
+import { ProfessorEffects } from './states/professor/effects';
+import { FaculdadeEffects } from './states/faculdade/effects';
 
 @NgModule({
   declarations: [
@@ -39,9 +43,13 @@ import { AlunoEffects } from './states/aluno/effects';
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     StoreModule.forFeature(ConfigReducers.configuracaoGeralFeatureKey, ConfigReducers.reducers),
     StoreModule.forFeature(AlunoReducers.alunoFeatureKey, AlunoReducers.reducers),
+    StoreModule.forFeature(FaculdadeReducers.faculdadeFeatureKey, FaculdadeReducers.reducers),
+    StoreModule.forFeature(ProfessorReducers.professorFeatureKey, ProfessorReducers.reducers),
     EffectsModule.forFeature([
       ConfiguracaoGeralEffects,
-      AlunoEffects
+      AlunoEffects,
+      FaculdadeEffects,
+      ProfessorEffects
     ])
   ],
   providers: [

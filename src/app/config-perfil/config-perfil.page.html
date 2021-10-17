@@ -63,17 +63,17 @@
   <form #formFaculdade *ngIf="tipoPerfil === 'faculdade'">
     <ion-item lines="full">
       <ion-label position="floating">Email Registrado no Login</ion-label>
-      <ion-input type="text" #email value="{{ emailUsuario }}" disabled></ion-input>
+      <ion-input type="text" #email value="{{ emailLogado }}" disabled></ion-input>
     </ion-item>
 
     <ion-item lines="full">
       <ion-label position="floating">Nome da Faculdade</ion-label>
-      <ion-input type="text" #nomeFaculdade required></ion-input>
+      <ion-input type="text" #nomeFaculdade required value="{{ nome }}"></ion-input>
     </ion-item>
 
     <ion-item lines="full">
       <ion-label position="floating">Site Oficial</ion-label>
-      <ion-input type="text" #site required></ion-input>
+      <ion-input type="text" #site required value="{{ siteOficial }}"></ion-input>
     </ion-item>
 
     <br>
@@ -119,12 +119,12 @@
   <form #formProfessor *ngIf="tipoPerfil === 'professor'">
     <ion-item lines="full">
       <ion-label position="floating">Email Registrado no Login</ion-label>
-      <ion-input type="text" #email value="{{ emailUsuario }}" disabled></ion-input>
+      <ion-input type="text" #email value="{{ emailLogado }}" disabled></ion-input>
     </ion-item>
 
     <ion-item lines="full">
       <ion-label position="floating">Nome Completo</ion-label>
-      <ion-input type="text" #nomeProfessor required></ion-input>
+      <ion-input type="text" #nomeProfessor required value="{{ nome }}"></ion-input>
     </ion-item>
 
     <br>

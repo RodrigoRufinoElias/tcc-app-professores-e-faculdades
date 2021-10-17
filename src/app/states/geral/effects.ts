@@ -66,7 +66,7 @@ export class ConfiguracaoGeralEffects {
         tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: true}))),
         tap(({ idAluno, email, nome, listaFaculdades }) => {
           if(idAluno) {
-            this.perfilService.editarPerfilAluno(idAluno, email, nome, listaFaculdades);
+            this.perfilService.editarPerfilAluno(idAluno, nome, listaFaculdades);
           } else {
             this.perfilService.salvarPerfilAluno(email, nome, listaFaculdades);
             this.store.dispatch(ConfiguracaoGeralActions.setPerfil({emailLogado: email, tipoUsuarioLogado: TipoUsuario.ALUNO}));
@@ -88,10 +88,20 @@ export class ConfiguracaoGeralEffects {
       this.actions$.pipe(
         ofType(ConfiguracaoGeralActions.salvarPerfilFaculdade),
         tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: true}))),
-        tap(({ email, nome, siteOficial, listaProfessores }) => {
-          this.perfilService.salvarPerfilFaculdade(email, nome, siteOficial, listaProfessores);
-          this.store.dispatch(ConfiguracaoGeralActions.setPerfil({emailLogado: email, tipoUsuarioLogado: TipoUsuario.FACULDADE}));
-          timer(1000).subscribe(() => this.irParaFaculdade());
+        tap(({ idFaculdade, email, nome, siteOficial, listaProfessores }) => {
+          if(idFaculdade) {
+            this.perfilService.editarPerfilFaculdade(idFaculdade, nome, siteOficial, listaProfessores);
+          } else {
+            this.perfilService.salvarPerfilFaculdade(email, nome, siteOficial, listaProfessores);
+            this.store.dispatch(ConfiguracaoGeralActions.setPerfil({emailLogado: email, tipoUsuarioLogado: TipoUsuario.FACULDADE}));
+          }
+
+          timer(1000).subscribe(() =>
+            {
+              this.irParaFaculdade();
+              this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false}));
+            }
+          );
         }),
       ),
     { dispatch: false },
@@ -102,10 +112,20 @@ export class ConfiguracaoGeralEffects {
       this.actions$.pipe(
         ofType(ConfiguracaoGeralActions.salvarPerfilProfessor),
         tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: true}))),
-        tap(({ email, nome, listaFaculdades }) => {
-          this.perfilService.salvarPerfilProfessor(email, nome, listaFaculdades);
-          this.store.dispatch(ConfiguracaoGeralActions.setPerfil({emailLogado: email, tipoUsuarioLogado: TipoUsuario.PROFESSOR}));
-          timer(1000).subscribe(() => this.irParaProfessor());
+        tap(({ idProfessor, email, nome, listaFaculdades }) => {
+          if(idProfessor) {
+            this.perfilService.editarPerfilProfessor(idProfessor, nome, listaFaculdades);
+          } else {
+            this.perfilService.salvarPerfilProfessor(email, nome, listaFaculdades);
+            this.store.dispatch(ConfiguracaoGeralActions.setPerfil({emailLogado: email, tipoUsuarioLogado: TipoUsuario.ALUNO}));
+          }
+
+          timer(1000).subscribe(() =>
+            {
+              this.irParaProfessor();
+              this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false}));
+            }
+          );
         }),
       ),
     { dispatch: false },
