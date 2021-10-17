@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="selecao-perfil"></ion-back-button>
+      <ion-back-button defaultHref="{{ backRoute }}"></ion-back-button>
     </ion-buttons>
     <ion-title>{{ titulo }}</ion-title>
   </ion-toolbar>
@@ -11,13 +11,13 @@
   <!-- Formulário para Perfil Aluno -->
   <form #formAluno *ngIf="tipoPerfil === 'aluno'">
     <ion-item lines="full">
-      <ion-label position="floating">Email Registrado no Login</ion-label>
-      <ion-input type="text" #email value="{{ emailUsuario }}" disabled></ion-input>
+      <ion-label position="floating">Email Registrado</ion-label>
+      <ion-input type="text" #email value="{{ emailLogado }}" disabled></ion-input>
     </ion-item>
 
     <ion-item lines="full">
       <ion-label position="floating">Nome Completo</ion-label>
-      <ion-input type="text" #nomeAluno required></ion-input>
+      <ion-input type="text" #nomeAluno required value="{{ nome }}"></ion-input>
     </ion-item>
 
     <br>

@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { ModalController } from '@ionic/angular';
-import { take } from 'rxjs/operators';
+import { map, mapTo, take } from 'rxjs/operators';
+import { AngularFireList } from '@angular/fire/compat/database';
+import { combineLatest, timer } from 'rxjs';
 
 import { selectPerfil } from '../states/geral/selectors';
 import { PerfilService } from '../services/perfil.service';
@@ -10,17 +12,20 @@ import { Faculdade } from '../models/faculdade.model';
 import { Professor } from '../models/professor.model';
 import { ModalListasComponent } from './modal-listas/modal-listas.component';
 import * as ConfiguracaoGeralActions from '../states/geral/actions';
+import { selectAluno } from '../states/aluno/selectors';
 
 @Component({
   selector: 'app-config-perfil',
   templateUrl: './config-perfil.page.html',
   styleUrls: ['./config-perfil.page.scss'],
 })
-export class ConfigPerfilPage implements OnInit {
+export class ConfigPerfilPage {
 
   tipoPerfil: string;
+  id: number;
   titulo: string = '';
-  emailUsuario: string = '';
+  nome: string = '';
+
   listaFaculdades: Faculdade[] = [];
   listaFaculdadesEscolhidas: Faculdade[] = [];
   listaProfessores: Professor[] = [];
@@ -33,54 +38,100 @@ export class ConfigPerfilPage implements OnInit {
     private modalController: ModalController
   ) {
     this.tipoPerfil = this.actRoute.snapshot.params.perfil;
+    this.id = Number(this.actRoute.snapshot.params.id);
     this.init();
   }
 
-  ngOnInit() {
-    this.store.pipe(take(1), select(selectPerfil))
-      .subscribe((p) => this.emailUsuario = p.emailLogado);
+  get backRoute() {
+    return this.id ? this.tipoPerfil : 'selecao-perfil';
+  }
+
+  get emailLogado() {
+    return this.perfilService.emailLogado;
+  }
+
+  recupararNomeAluno() {
+    this.store.pipe(
+      take(1),
+      select(selectAluno),
+    ).subscribe(res => this.nome = res.nome);
   }
 
   init() {
     if (this.tipoPerfil === 'aluno') {
       this.titulo = 'Dados do Aluno';
-
       let lista = this.perfilService.listarFaculdades();
-      lista.snapshotChanges().subscribe(res => {
-        this.listaFaculdades = [];
-        res.forEach(item => {
-          let f = item.payload.toJSON();
-          f['$key'] = item.key;
-          this.listaFaculdades.push(f as Faculdade);
-        });
-      });
+
+      if (this.id) {
+        let listaAlunoFaculdade = this.perfilService.listarRelacaoAlunoFaculdadePorIdAluno(this.id);
+        this.recupararNomeAluno();
+        this.initListasFaculdades(lista, listaAlunoFaculdade);
+      } else {
+        this.initListasFaculdades(lista);
+      }
 
     } else if (this.tipoPerfil === 'faculdade') {
       this.titulo = 'Dados da Faculdade';
 
       let lista = this.perfilService.listarProfessores();
-      lista.snapshotChanges().subscribe(res => {
-        this.listaProfessores = [];
-        res.forEach(item => {
-          let f = item.payload.toJSON();
-          f['$key'] = item.key;
-          this.listaProfessores.push(f as Professor);
-        });
-      });
+      this.initListasProfessores(lista);
 
     } else {
       this.titulo = 'Dados do Professor';
 
       let lista = this.perfilService.listarFaculdades();
-      lista.snapshotChanges().subscribe(res => {
+      this.initListasFaculdades(lista);
+    }
+  }
+
+  initListasFaculdades(lista: AngularFireList<any>, listaAlunoFaculdade?: AngularFireList<any>) {
+    if (listaAlunoFaculdade) {
+      combineLatest([
+        lista.snapshotChanges().pipe(
+          map(actions => this.perfilService.mapSnapshotChanges(actions))
+        ),
+        listaAlunoFaculdade.snapshotChanges().pipe(
+          map(actions => this.perfilService.mapSnapshotChanges(actions))
+        )
+      ]).pipe(
+        take(1),
+        map(([listaCompleta, listaRelacional]) => {
+          let listaEscolhidaAux = [];
+
+          listaRelacional.forEach(lr => {
+            const [l] = listaCompleta.filter((lc) => lc.id === lr.idFaculdade);
+            listaEscolhidaAux.push(l);
+          });
+
+          return {
+            lc: listaCompleta,
+            le: listaEscolhidaAux
+          }
+        })
+      ).subscribe(res => {
+        this.listaFaculdades = res.lc;
+        this.listaFaculdadesEscolhidas = res.le;
+      });
+
+    } else {
+      lista.snapshotChanges().pipe(
+        map(actions => this.perfilService.mapSnapshotChanges(actions))
+      ).subscribe(res => {
         this.listaFaculdades = [];
-        res.forEach(item => {
-          let f = item.payload.toJSON();
-          f['$key'] = item.key;
-          this.listaFaculdades.push(f as Faculdade);
-        });
+        this.listaFaculdades = res;
       });
     }
+  }
+
+  initListasProfessores(lista) {
+    lista.snapshotChanges().subscribe(res => {
+      this.listaProfessores = [];
+      res.forEach(item => {
+        let f = item.payload.toJSON();
+        f['$key'] = item.key;
+        this.listaProfessores.push(f as Professor);
+      });
+    });
   }
 
   async exibirModalFaculdades() {
@@ -134,6 +185,7 @@ export class ConfigPerfilPage implements OnInit {
       this.store.dispatch(
         ConfiguracaoGeralActions.salvarPerfilAluno(
           {
+            idAluno: this.id,
             email: email.value,
             nome: nome.value,
             listaFaculdades: this.listaFaculdadesEscolhidas

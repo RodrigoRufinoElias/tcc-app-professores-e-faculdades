@@ -9,3 +9,8 @@ export const selectAluno = createSelector(
   alunoState,
   (c) => c.aluno,
 );
+
+export const selectIdFirebaseAluno = createSelector(
+  alunoState,
+  (c) => c.idFirebase,
+);

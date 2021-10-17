@@ -16,14 +16,14 @@ import { selectPerfil } from '../states/geral/selectors';
 })
 export class AlunoService {
 
-  emailLogado: string;
-
   constructor(
     private db: AngularFireDatabase,
     private authService: AuthenticationService,
     private store: Store<any>
-  ) {
-    this.emailLogado = this.authService.userEmail;
+  ) {}
+
+  get emailLogado() {
+    return this.authService.isLoggedIn ? this.authService.userEmail : null;
   }
 
   obterPerfilAluno() {

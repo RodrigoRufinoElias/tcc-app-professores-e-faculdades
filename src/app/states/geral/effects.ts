@@ -6,8 +6,10 @@ import { Router } from '@angular/router';
 import { timer } from 'rxjs';
 
 import * as ConfiguracaoGeralActions from './actions';
+import * as AlunoActions from '../aluno/actions';
 import { PerfilService } from 'src/app/services/perfil.service';
 import { TipoUsuario } from 'src/app/models/usuario.model';
+import { AuthenticationService } from 'src/app/seguranca/autenticacao.service';
 
 @Injectable({ providedIn: 'root' })
 export class ConfiguracaoGeralEffects {
@@ -15,6 +17,7 @@ export class ConfiguracaoGeralEffects {
     private actions$: Actions,
     private store: Store<any>,
     private perfilService: PerfilService,
+    private authService: AuthenticationService,
     private router: Router
   ) {}
 
@@ -61,10 +64,20 @@ export class ConfiguracaoGeralEffects {
       this.actions$.pipe(
         ofType(ConfiguracaoGeralActions.salvarPerfilAluno),
         tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: true}))),
-        tap(({ email, nome, listaFaculdades }) => {
-          this.perfilService.salvarPerfilAluno(email, nome, listaFaculdades);
-          this.store.dispatch(ConfiguracaoGeralActions.setPerfil({emailLogado: email, tipoUsuarioLogado: TipoUsuario.ALUNO}));
-          timer(1000).subscribe(() => this.irParaAluno());
+        tap(({ idAluno, email, nome, listaFaculdades }) => {
+          if(idAluno) {
+            this.perfilService.editarPerfilAluno(idAluno, email, nome, listaFaculdades);
+          } else {
+            this.perfilService.salvarPerfilAluno(email, nome, listaFaculdades);
+            this.store.dispatch(ConfiguracaoGeralActions.setPerfil({emailLogado: email, tipoUsuarioLogado: TipoUsuario.ALUNO}));
+          }
+
+          timer(1000).subscribe(() =>
+            {
+              this.irParaAluno();
+              this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false}));
+            }
+          );
         }),
       ),
     { dispatch: false },
@@ -93,6 +106,20 @@ export class ConfiguracaoGeralEffects {
           this.perfilService.salvarPerfilProfessor(email, nome, listaFaculdades);
           this.store.dispatch(ConfiguracaoGeralActions.setPerfil({emailLogado: email, tipoUsuarioLogado: TipoUsuario.PROFESSOR}));
           timer(1000).subscribe(() => this.irParaProfessor());
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  logout$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(ConfiguracaoGeralActions.logout),
+        tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: true}))),
+        tap(() => {
+          this.store.dispatch(AlunoActions.clearState());
+          this.store.dispatch(ConfiguracaoGeralActions.clearState());
+          this.authService.SignOut();
         }),
       ),
     { dispatch: false },

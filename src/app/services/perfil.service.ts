@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/compat/database';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { take } from 'rxjs/operators';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 
 import { Aluno } from '../models/aluno.model';
 import { Professor } from '../models/professor.model';
 import { Faculdade } from '../models/faculdade.model';
 import { Entidades } from '../models/entidades.enum';
 import * as ConfiguracaoGeralActions from '../states/geral/actions';
+import * as AlunoActions from '../states/aluno/actions';
+import { AuthenticationService } from '../seguranca/autenticacao.service';
+import { selectIdFirebaseAluno } from '../states/aluno/selectors';
 
 @Injectable({
   providedIn: 'root'
@@ -18,10 +22,11 @@ export class PerfilService {
   perfilFaculdadeListRef: AngularFireList<any>;
   relacaoAlunoFaculdadeListRef: AngularFireList<any>;
   relacaoProfessorFaculdadeListRef: AngularFireList<any>;
-  perfilRef: AngularFireObject<any>;
 
   constructor(
     private db: AngularFireDatabase,
+    private af: AngularFirestore,
+    private authService: AuthenticationService,
     private store: Store<any>
   ) {
     this.listarAlunos();
@@ -29,6 +34,18 @@ export class PerfilService {
     this.listarFaculdades();
     this.listarRelacaoAlunoFaculdade();
     this.listarRelacaoProfessorFaculdade();
+  }
+
+  mapSnapshotChanges(actions) {
+    return actions.map(a => {
+      const data = a.payload.toJSON();
+      const key = a.key;
+      return { key, ...data };
+    })
+  }
+
+  get emailLogado(){
+    return this.authService.isLoggedIn ? this.authService.userEmail : null;
   }
 
   procurarAluno(email: string) {
@@ -66,6 +83,11 @@ export class PerfilService {
     return this.relacaoAlunoFaculdadeListRef;
   }
 
+  listarRelacaoAlunoFaculdadePorIdAluno(idAluno: number) {
+    this.relacaoAlunoFaculdadeListRef = this.db.list(Entidades.ALUNO_FACULDADE, ref => ref.orderByChild('idAluno').equalTo(idAluno));
+    return this.relacaoAlunoFaculdadeListRef;
+  }
+
   listarRelacaoProfessorFaculdade() {
     this.relacaoProfessorFaculdadeListRef = this.db.list(Entidades.PROFESSOR_FACULDADE);
     return this.relacaoProfessorFaculdadeListRef;
@@ -90,6 +112,25 @@ export class PerfilService {
     (error) => console.log('error', error),
     () => {
       this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false}))
+    });
+  }
+
+  editarPerfilAluno(idAluno: number, email: string, nome: string, listaFaculdades: Faculdade[]) {
+    let alunoRef;
+
+    this.store.pipe(
+      select(selectIdFirebaseAluno),
+      take(1)
+    ).subscribe((idFirebaseAluno) => {
+      alunoRef = this.db.object(`${Entidades.ALUNO}/${idFirebaseAluno}`);
+
+      alunoRef.update({
+        nome
+      });
+
+      this.store.dispatch(AlunoActions.getPerfilAluno());
+
+      this.limparRelacoesAlunoFaculdadeESalvar(idAluno, listaFaculdades)
     });
   }
 

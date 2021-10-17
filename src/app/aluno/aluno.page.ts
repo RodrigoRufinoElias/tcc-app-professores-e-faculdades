@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
 import * as AlunoActions from '../states/aluno/actions';
+import * as ConfiguracaoGeralActions from '../states/geral/actions';
 import { selectAluno } from '../states/aluno/selectors';
 import { Aluno } from '../models/aluno.model';
 
@@ -15,7 +16,8 @@ import { Aluno } from '../models/aluno.model';
 export class AlunoPage implements OnInit {
 
   aluno$: Observable<Aluno>;
-  titulo = 'App Professores e Faculdades'
+  titulo = 'App Professores e Faculdades';
+  idAluno: number;
 
   constructor(
     private store: Store<any>,
@@ -30,8 +32,10 @@ export class AlunoPage implements OnInit {
     );
 
     this.aluno$.subscribe((aluno) => {
-      if(aluno)
+      if(aluno) {
         this.titulo = `Olá, ${aluno.nome}`
+        this.idAluno = aluno.id
+      }
     });
   }
 
@@ -44,6 +48,10 @@ export class AlunoPage implements OnInit {
   }
 
   editarDados() {
-    this.router.navigate(['config-perfil/aluno']);
+    this.router.navigate([`config-perfil/aluno/${this.idAluno}`]);
+  }
+
+  logout() {
+    this.store.dispatch(ConfiguracaoGeralActions.logout());
   }
 }

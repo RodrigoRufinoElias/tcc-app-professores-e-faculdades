@@ -35,7 +35,7 @@ export const verificarPerfilExistente = createAction(
 
 export const salvarPerfilAluno = createAction(
   '[Configuração Geral] salva o perfil do aluno.',
-  props<{ email: string, nome: string, listaFaculdades: Faculdade[] }>(),
+  props<{ idAluno: number, email: string, nome: string, listaFaculdades: Faculdade[] }>(),
 );
 
 export const salvarPerfilFaculdade = createAction(
@@ -47,3 +47,5 @@ export const salvarPerfilProfessor = createAction(
   '[Configuração Geral] salva o perfil do professor.',
   props<{ email: string, nome: string, listaFaculdades: Faculdade[] }>(),
 );
+
+export const logout = createAction('[Configuração Geral] Logout.');

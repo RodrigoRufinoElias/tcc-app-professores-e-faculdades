@@ -36,6 +36,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'config-perfil/:perfil/:id',
+    loadChildren: () => import('./config-perfil/config-perfil.module').then( m => m.ConfigPerfilPageModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'professor',
     loadChildren: () => import('./professor/professor.module').then( m => m.ProfessorPageModule),
     canActivate: [AuthGuard]
@@ -50,6 +55,7 @@ const routes: Routes = [
     loadChildren: () => import('./faculdade/faculdade.module').then( m => m.FaculdadePageModule),
     canActivate: [AuthGuard]
   },
+
 ];
 
 @NgModule({
