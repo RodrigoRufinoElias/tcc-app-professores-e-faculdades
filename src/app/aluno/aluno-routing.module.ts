@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AlunoPage } from './aluno.page';
-import { PesquisarFaculdadesComponent } from './pesquisar-faculdades/pesquisar-faculdades.component';
-import { PesquisarProfessoresComponent } from './pesquisar-professores/pesquisar-professores.component';
 
 const routes: Routes = [
   {
@@ -11,12 +9,36 @@ const routes: Routes = [
     component: AlunoPage
   },
   {
-    path: 'pesquisarFaculdades',
-    component: PesquisarFaculdadesComponent
+    path: 'avaliar-faculdade',
+    loadChildren: () => import('./avaliar-faculdade/avaliar-faculdade.module').then( m => m.AvaliarFaculdadePageModule)
   },
   {
-    path: 'pesquisarProfessores',
-    component: PesquisarProfessoresComponent
+    path: 'avaliar-professor',
+    loadChildren: () => import('./avaliar-professor/avaliar-professor.module').then( m => m.AvaliarProfessorPageModule)
+  },
+  {
+    path: 'comentar-faculdade',
+    loadChildren: () => import('./comentar-faculdade/comentar-faculdade.module').then( m => m.ComentarFaculdadePageModule)
+  },
+  {
+    path: 'detalhar-faculdade',
+    loadChildren: () => import('./detalhar-faculdade/detalhar-faculdade.module').then( m => m.DetalharFaculdadePageModule)
+  },
+  {
+    path: 'detalhar-professor',
+    loadChildren: () => import('./detalhar-professor/detalhar-professor.module').then( m => m.DetalharProfessorPageModule)
+  },
+  {
+    path: 'pesquisar-faculdades',
+    loadChildren: () => import('./pesquisar-faculdades/pesquisar-faculdades.module').then( m => m.PesquisarFaculdadesPageModule)
+  },
+  {
+    path: 'pesquisar-professores',
+    loadChildren: () => import('./pesquisar-professores/pesquisar-professores.module').then( m => m.PesquisarProfessoresPageModule)
+  },
+  {
+    path: 'visualizar-comentario',
+    loadChildren: () => import('./visualizar-comentario/visualizar-comentario.module').then( m => m.VisualizarComentarioPageModule)
   }
 ];
 

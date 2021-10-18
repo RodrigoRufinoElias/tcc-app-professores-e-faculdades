@@ -1,18 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
 import { IonicModule } from '@ionic/angular';
 
-import { AlunoPageRoutingModule } from './aluno-routing.module';
-import { AlunoPage } from './aluno.page';
+import { ComentarioGeralPageRoutingModule } from './comentario-geral-routing.module';
+
+import { ComentarioGeralPage } from './comentario-geral.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    AlunoPageRoutingModule
+    ComentarioGeralPageRoutingModule
   ],
-  declarations: [AlunoPage]
+  declarations: [ComentarioGeralPage]
 })
-export class AlunoPageModule {}
+export class ComentarioGeralPageModule {}
