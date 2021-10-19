@@ -5,12 +5,17 @@ export const alunoState = createFeatureSelector<AlunoState>(
   alunoFeatureKey,
 );
 
+export const selectIdFirebaseAluno = createSelector(
+  alunoState,
+  (c) => c.idFirebase,
+);
+
 export const selectAluno = createSelector(
   alunoState,
   (c) => c.aluno,
 );
 
-export const selectIdFirebaseAluno = createSelector(
+export const selectFaculdades = createSelector(
   alunoState,
-  (c) => c.idFirebase,
+  (c) => c.faculdades,
 );

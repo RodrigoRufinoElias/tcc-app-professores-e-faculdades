@@ -11,4 +11,11 @@ export const getPerfilAlunoSuccess = createAction(
   props<{ idFirebase: string, aluno: Aluno }>(),
 );
 
+export const getFaculdadesAluno = createAction('[Aluno] obtém as faculdades do aluno logado.');
+
+export const getFaculdadesAlunoSuccess = createAction(
+  '[Aluno] sucesso ao obter as faculdades do aluno logado.',
+  props<{ faculdades: Faculdade[] }>(),
+);
+
 export const clearState = createAction('[Aluno] limpa o state.');

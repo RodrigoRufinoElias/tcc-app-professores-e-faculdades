@@ -38,4 +38,25 @@ export class AlunoEffects {
       ),
     { dispatch: false },
   );
+
+  getFaculdadesAluno$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AlunoActions.getFaculdadesAluno),
+        tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: true}))),
+        tap(() => {
+          this.alunoService.listarFaculdades();
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  getFaculdadesAlunoSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AlunoActions.getFaculdadesAlunoSuccess),
+        tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false})))
+      ),
+    { dispatch: false },
+  );
 }

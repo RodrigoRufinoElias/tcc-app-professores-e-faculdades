@@ -40,11 +40,11 @@ export class AlunoPage implements OnInit {
   }
 
   pesquisarFaculdades() {
-    this.router.navigate(['aluno/pesquisarFaculdades']);
+    this.router.navigate(['aluno/pesquisar-faculdades']);
   }
 
   pesquisarProfessores() {
-    this.router.navigate(['aluno/pesquisarProfessores']);
+    this.router.navigate(['aluno/pesquisar-frofessores']);
   }
 
   editarDados() {

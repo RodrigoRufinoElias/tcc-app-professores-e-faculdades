@@ -1,4 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+
+import { Faculdade } from 'src/app/models/faculdade.model';
+import * as AlunoActions from '../../states/aluno/actions';
+import { selectFaculdades } from '../../states/aluno/selectors';
 
 @Component({
   selector: 'app-pesquisar-faculdades',
@@ -7,9 +14,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PesquisarFaculdadesPage implements OnInit {
 
-  constructor() { }
+  listaFaculdade: Faculdade[] = [];
+  textoFiltro: string = '';
+
+  constructor(
+    private store: Store<any>,
+    private router: Router
+  ) { }
 
   ngOnInit() {
+    this.store.dispatch(AlunoActions.getFaculdadesAluno());
+
+    this.store.pipe(
+      select(selectFaculdades),
+    ).subscribe(faculdades => this.listaFaculdade = faculdades);
   }
 
+  detalharFaculdade(id: number) {
+    this.router.navigate([`aluno/detalhar-faculdade/${id}`]);
+  }
 }
