@@ -26,6 +26,7 @@ export class DetalharFaculdadePage implements OnInit {
   idAluno: number;
   avaliacaoGeral: number = 0;
   comentarios: ComentarioFaculdade[] = [];
+  labelAvaliar: string = 'Avaliar Faculdade';
 
   unsubscribe$: Subject<any> = new Subject();
 
@@ -58,6 +59,7 @@ export class DetalharFaculdadePage implements OnInit {
       ).subscribe((avaliacoes) => {
         if (avaliacoes.length > 0) {
           this.verificarAvaliacaoGeral(avaliacoes);
+          this.verificarSeAlunoAvaliou(avaliacoes);
         }
       });
 
@@ -83,17 +85,17 @@ export class DetalharFaculdadePage implements OnInit {
     this.avaliacaoGeral = soma/avaliacoes.length;
   }
 
+  // Verifica se o aluno já avaliou essa faculdade
+  verificarSeAlunoAvaliou(avaliacoes) {
+    let [avaliacao] = avaliacoes.filter(a => a.idAluno === this.idAluno);
+    this.labelAvaliar = avaliacao ? 'Editar Avaliação Faculdade' : 'Avaliar Faculdade';
+  }
+
   avaliar() {
     this.router.navigate([`aluno/avaliar-faculdade/${this.idFaculdade}`]);
   }
 
-  // TODO Remover e utilizar nos comentários
   comentar() {
-    // this.store.dispatch(AlunoActions.comentarFaculdade({
-    //   idFaculdade: this.idFaculdade,
-    //   idAluno: this.idAluno,
-    //   comentario: 'comentário teste'
-    // }));
     this.router.navigate([`aluno/comentar-faculdade/${this.idFaculdade}`]);
   }
 
@@ -102,8 +104,6 @@ export class DetalharFaculdadePage implements OnInit {
   }
 
   ionViewDidLeave() {
-    console.log('aqui');
-
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
