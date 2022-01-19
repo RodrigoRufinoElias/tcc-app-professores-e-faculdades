@@ -15,7 +15,22 @@ export const selectAluno = createSelector(
   (c) => c.aluno,
 );
 
+export const selectIdAluno = createSelector(
+  alunoState,
+  (c) => c.aluno.id,
+);
+
 export const selectFaculdades = createSelector(
   alunoState,
   (c) => c.faculdades,
+);
+
+export const selectAvaliacoes = createSelector(
+  alunoState,
+  (c) => c.avaliacoes,
+);
+
+export const selectComentarios = createSelector(
+  alunoState,
+  (c) => c.comentarios,
 );

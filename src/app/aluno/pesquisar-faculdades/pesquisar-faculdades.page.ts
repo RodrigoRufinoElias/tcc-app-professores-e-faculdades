@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 
 import { Faculdade } from 'src/app/models/faculdade.model';
 import * as AlunoActions from '../../states/aluno/actions';

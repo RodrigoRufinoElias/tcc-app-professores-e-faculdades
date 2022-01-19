@@ -12,4 +12,11 @@ export class ComentarFaculdadePage implements OnInit {
   ngOnInit() {
   }
 
+  comentar() {
+    // this.store.dispatch(AlunoActions.comentarFaculdade({
+    //   idFaculdade: this.idFaculdade,
+    //   idAluno: this.idAluno,
+    //   comentario: 'comentário teste'
+    // }));
+  }
 }

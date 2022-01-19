@@ -59,4 +59,50 @@ export class AlunoEffects {
       ),
     { dispatch: false },
   );
+
+  getAvaliacoesEComentariosFaculdade$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AlunoActions.getAvaliacoesEComentariosFaculdade),
+        tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: true}))),
+        tap(({ idFaculdade }) => {
+          this.alunoService.listarAvaliacoesEComentariosFaculdade(idFaculdade);
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  getAvaliacoesEComentariosFaculdadeSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AlunoActions.getAvaliacoesEComentariosFaculdadeSuccess),
+        tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false})))
+      ),
+    { dispatch: false },
+  );
+
+  avaliarFaculdade$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AlunoActions.avaliarFaculdade),
+        tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: true}))),
+        tap(({ idFaculdade, idAluno, avaliacao }) => {
+          this.alunoService.avaliarFaculdade(idFaculdade, idAluno, avaliacao);
+        })
+      ),
+    { dispatch: false },
+  );
+
+  comentarFaculdade$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AlunoActions.comentarFaculdade),
+        tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: true}))),
+        tap(({ idFaculdade, idAluno, comentario }) => {
+          this.alunoService.comentarFaculdade(idFaculdade, idAluno, comentario);
+        }),
+        tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false}))),
+      ),
+    { dispatch: false },
+  );
 }

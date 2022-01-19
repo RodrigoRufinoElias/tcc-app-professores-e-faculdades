@@ -12,11 +12,17 @@ import { Entidades } from '../models/entidades.enum';
 import * as AlunoActions from '../states/aluno/actions';
 import { selectAluno } from '../states/aluno/selectors';
 import { PerfilService } from './perfil.service';
+import * as ConfiguracaoGeralActions from '../states/geral/actions';
+import { AvaliacaoFaculdade } from '../models/avaliacaoFaculdade';
+import { ComentarioFaculdade } from '../models/comentarioFaculdade';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AlunoService {
+
+  avaliacoesAlunoFaculdadeListRef: AngularFireList<any>;
+  comentariosAlunoFaculdadeListRef: AngularFireList<any>;
 
   constructor(
     private db: AngularFireDatabase,
@@ -79,16 +85,83 @@ export class AlunoService {
     });
   }
 
-  detalharFaculdade() {
-
+  obterAvaliacoesFaculdade(idFaculdade: number) {
+    this.avaliacoesAlunoFaculdadeListRef = this.db.list(Entidades.AVALIACAO_FACULDADE, ref => ref.orderByChild('idFaculdade').equalTo(idFaculdade));
+    return this.avaliacoesAlunoFaculdadeListRef;
   }
 
-  avaliarFaculdade() {
-
+  obterComentariosFaculdade(idFaculdade: number) {
+    this.comentariosAlunoFaculdadeListRef = this.db.list(Entidades.COMENTARIO_FACULDADE, ref => ref.orderByChild('idFaculdade').equalTo(idFaculdade));
+    return this.comentariosAlunoFaculdadeListRef;
   }
 
-  comentarFaculdade() {
+  listarAvaliacoesEComentariosFaculdade(idFaculdade: number) {
+    let listaAvaliacaoRef = this.obterAvaliacoesFaculdade(idFaculdade);
+    let listaComentarioRef = this.obterComentariosFaculdade(idFaculdade);
 
+    combineLatest([
+      listaAvaliacaoRef.snapshotChanges().pipe(
+        map(actions => this.perfilService.mapSnapshotChanges(actions))
+      ),
+      listaComentarioRef.snapshotChanges().pipe(
+        map(actions => this.perfilService.mapSnapshotChanges(actions))
+      )
+    ]).pipe(
+      take(1),
+      map(([listaAvaliacoes, listaComentarios]) => {
+        return {listaAvaliacoes, listaComentarios};
+      })
+    ).subscribe(res => {
+      this.store.dispatch(AlunoActions.getAvaliacoesEComentariosFaculdadeSuccess({
+        avaliacoes: res.listaAvaliacoes,
+        comentarios: res.listaComentarios
+      }));
+    });
+  }
+
+  avaliarFaculdade(idFaculdade: number, idAluno: number, avaliacao: number) {
+    // Recupera a última avaliação da faculdade criado
+    this.db.list(Entidades.AVALIACAO_FACULDADE, ref => ref.orderByChild('id').limitToLast(1)).snapshotChanges().pipe(take(1)).subscribe(res => {
+      let a = res[0].payload.toJSON();
+      a['$key'] = res[0].key;
+      const proxId = (a as AvaliacaoFaculdade).id + 1;
+
+      // Cria a avaliação da faculdade
+      this.avaliacoesAlunoFaculdadeListRef.push({
+        id: proxId,
+        idAluno,
+        idFaculdade,
+        avaliacao,
+        data: (new Date()).getTime()
+      });
+    },
+    (error) => console.log('error', error),
+    () => {
+      this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false}))
+    });
+  }
+
+  comentarFaculdade(idFaculdade: number, idAluno: number, comentario: string) {
+    // Recupera o último comentário sobre a faculdade criado
+    this.db.list(Entidades.COMENTARIO_FACULDADE, ref => ref.orderByChild('id').limitToLast(1)).snapshotChanges().pipe(take(1)).subscribe(res => {
+      let a = res[0].payload.toJSON();
+      a['$key'] = res[0].key;
+      const proxId = (a as ComentarioFaculdade).id + 1;
+
+      // Cria o comentário sobre a faculdade
+      this.comentariosAlunoFaculdadeListRef.push({
+        id: proxId,
+        idAluno,
+        idFaculdade,
+        comentario,
+        respostaFaculdade: '',
+        data: (new Date()).getTime()
+      });
+    },
+    (error) => console.log('error', error),
+    () => {
+      this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false}))
+    });
   }
 
   visualizarComentarioFaculdade() {
@@ -99,7 +172,7 @@ export class AlunoService {
 
   }
 
-  detalharProfessor() {
+  obterAvaliacoesEComentariosProfessor() {
 
   }
 

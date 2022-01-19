@@ -1,4 +1,18 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { select, Store } from '@ngrx/store';
+import { take, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+
+import { Faculdade } from 'src/app/models/faculdade.model';
+import * as AlunoActions from '../../states/aluno/actions';
+import { ComentarioFaculdade } from 'src/app/models/comentarioFaculdade';
+import {
+  selectIdAluno,
+  selectFaculdades,
+  selectAvaliacoes,
+  selectComentarios
+} from '../../states/aluno/selectors';
 
 @Component({
   selector: 'app-detalhar-faculdade',
@@ -7,9 +21,90 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DetalharFaculdadePage implements OnInit {
 
-  constructor() { }
+  faculdade: Faculdade;
+  idFaculdade: number;
+  idAluno: number;
+  avaliacaoGeral: number = 0;
+  comentarios: ComentarioFaculdade[] = [];
 
-  ngOnInit() {
+  unsubscribe$: Subject<any> = new Subject();
+
+  constructor(
+    private actRoute: ActivatedRoute,
+    private store: Store<any>,
+    private router: Router
+  ) {
+    this.idFaculdade = Number(this.actRoute.snapshot.params.idFaculdade);
+
+    this.store.pipe(
+      take(1),
+      select(selectIdAluno)
+    ).subscribe((idAluno) => {
+      this.idAluno = idAluno
+    });
   }
 
+  ngOnInit() {
+    this.store.pipe(
+      take(1),
+      select(selectFaculdades),
+    ).subscribe(faculdades => {
+      [this.faculdade] = faculdades.filter(f => f.id == this.idFaculdade);
+      this.store.dispatch(AlunoActions.getAvaliacoesEComentariosFaculdade({ idFaculdade: this.idFaculdade }));
+
+      this.store.pipe(
+        takeUntil(this.unsubscribe$),
+        select(selectAvaliacoes)
+      ).subscribe((avaliacoes) => {
+        if (avaliacoes.length > 0) {
+          this.verificarAvaliacaoGeral(avaliacoes);
+        }
+      });
+
+      this.store.pipe(
+        takeUntil(this.unsubscribe$),
+        select(selectComentarios)
+      ).subscribe((comentarios) => {
+        if (comentarios.length > 0) {
+          this.comentarios = comentarios;
+        }
+      });
+    });
+  }
+
+  // Conta a avaliação geral a partir das avaliações
+  verificarAvaliacaoGeral(avaliacoes) {
+    let soma = 0;
+
+    for (let index = 0; index < avaliacoes.length; index++) {
+      soma += avaliacoes[index].avaliacao;
+    }
+
+    this.avaliacaoGeral = soma/avaliacoes.length;
+  }
+
+  avaliar() {
+    this.router.navigate([`aluno/avaliar-faculdade/${this.idFaculdade}`]);
+  }
+
+  // TODO Remover e utilizar nos comentários
+  comentar() {
+    // this.store.dispatch(AlunoActions.comentarFaculdade({
+    //   idFaculdade: this.idFaculdade,
+    //   idAluno: this.idAluno,
+    //   comentario: 'comentário teste'
+    // }));
+    this.router.navigate([`aluno/comentar-faculdade/${this.idFaculdade}`]);
+  }
+
+  verComentario(idComentario) {
+    this.router.navigate([`aluno/visualizar-faculdade/${idComentario}`]);
+  }
+
+  ionViewDidLeave() {
+    console.log('aqui');
+
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 }

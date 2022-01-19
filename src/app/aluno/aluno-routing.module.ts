@@ -9,7 +9,7 @@ const routes: Routes = [
     component: AlunoPage
   },
   {
-    path: 'avaliar-faculdade',
+    path: 'avaliar-faculdade/:idFaculdade',
     loadChildren: () => import('./avaliar-faculdade/avaliar-faculdade.module').then( m => m.AvaliarFaculdadePageModule)
   },
   {
@@ -17,7 +17,7 @@ const routes: Routes = [
     loadChildren: () => import('./avaliar-professor/avaliar-professor.module').then( m => m.AvaliarProfessorPageModule)
   },
   {
-    path: 'comentar-faculdade',
+    path: 'comentar-faculdade/:idFaculdade',
     loadChildren: () => import('./comentar-faculdade/comentar-faculdade.module').then( m => m.ComentarFaculdadePageModule)
   },
   {
@@ -37,7 +37,7 @@ const routes: Routes = [
     loadChildren: () => import('./pesquisar-professores/pesquisar-professores.module').then( m => m.PesquisarProfessoresPageModule)
   },
   {
-    path: 'visualizar-comentario',
+    path: 'visualizar-comentario/:idComentario',
     loadChildren: () => import('./visualizar-comentario/visualizar-comentario.module').then( m => m.VisualizarComentarioPageModule)
   }
 ];
