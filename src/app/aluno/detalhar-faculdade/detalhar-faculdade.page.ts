@@ -27,6 +27,7 @@ export class DetalharFaculdadePage implements OnInit {
   avaliacaoGeral: number = 0;
   comentarios: ComentarioFaculdade[] = [];
   labelAvaliar: string = 'Avaliar Faculdade';
+  avaliou = false;
 
   unsubscribe$: Subject<any> = new Subject();
 
@@ -88,7 +89,14 @@ export class DetalharFaculdadePage implements OnInit {
   // Verifica se o aluno já avaliou essa faculdade
   verificarSeAlunoAvaliou(avaliacoes) {
     let [avaliacao] = avaliacoes.filter(a => a.idAluno === this.idAluno);
-    this.labelAvaliar = avaliacao ? 'Editar Avaliação Faculdade' : 'Avaliar Faculdade';
+
+    if (avaliacao) {
+      this.labelAvaliar = 'Ver sua avaliação';
+      this.avaliou = true;
+    } else {
+      this.labelAvaliar = 'Avaliar Faculdade';
+      this.avaliou = false;
+    }
   }
 
   avaliar() {

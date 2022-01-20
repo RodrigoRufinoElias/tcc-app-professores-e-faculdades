@@ -55,7 +55,7 @@
       </ion-col>
     </ion-row>
 
-    <div class="botao-comentar-faculdade">
+    <div class="botao-comentar-faculdade" *ngIf="avaliou">
       <ion-row>
         <ion-col>
           <ion-button (click)="comentar()" expand="block">
