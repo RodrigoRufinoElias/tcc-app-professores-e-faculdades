@@ -24,9 +24,9 @@ export class AvaliarFaculdadePage implements OnInit {
   faculdade: Faculdade;
   idFaculdade: number;
   idAluno: number;
-  avaliacao: number = 0;
+  avaliacao: number = 1;
   comentario: string = '';
-  labelAvaliar: string = 'Avaliar Faculdade';
+  avaliou = false;
 
   unsubscribe$: Subject<any> = new Subject();
 
@@ -58,7 +58,11 @@ export class AvaliarFaculdadePage implements OnInit {
       ).subscribe((avaliacoes) => {
         if (avaliacoes.length > 0) {
           let [avaliacao] = avaliacoes.filter(a => a.idAluno === this.idAluno);
-          this.avaliacao = avaliacao.avaliacao;
+
+          if (avaliacao) {
+            this.avaliacao = avaliacao.avaliacao;
+            this.avaliou = true;
+          }
         }
       });
 
@@ -75,4 +79,18 @@ export class AvaliarFaculdadePage implements OnInit {
     });
   }
 
+  onRatingChange(rating) {
+    this.avaliacao = rating;
+  }
+
+  avaliar() {
+    this.store.dispatch(AlunoActions.avaliarFaculdade({
+      idFaculdade: this.idFaculdade,
+      idAluno: this.idAluno,
+      avaliacao: this.avaliacao,
+      comentario: this.comentario
+    }));
+
+    this.avaliou = true;
+  }
 }

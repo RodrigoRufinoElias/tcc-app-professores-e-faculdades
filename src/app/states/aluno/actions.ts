@@ -32,7 +32,7 @@ export const getAvaliacoesEComentariosFaculdadeSuccess = createAction(
 
 export const avaliarFaculdade = createAction(
   '[Aluno] avaliar a faculdade.',
-  props<{ idFaculdade: number, idAluno: number, avaliacao: number }>(),
+  props<{ idFaculdade: number, idAluno: number, avaliacao: number, comentario: string }>(),
 );
 
 export const comentarFaculdade = createAction(

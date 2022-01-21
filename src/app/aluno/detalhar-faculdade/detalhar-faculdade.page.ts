@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { take, takeUntil } from 'rxjs/operators';
@@ -19,7 +19,7 @@ import {
   templateUrl: './detalhar-faculdade.page.html',
   styleUrls: ['./detalhar-faculdade.page.scss'],
 })
-export class DetalharFaculdadePage implements OnInit {
+export class DetalharFaculdadePage {
 
   faculdade: Faculdade;
   idFaculdade: number;
@@ -37,16 +37,16 @@ export class DetalharFaculdadePage implements OnInit {
     private router: Router
   ) {
     this.idFaculdade = Number(this.actRoute.snapshot.params.idFaculdade);
+  }
 
+  ionViewWillEnter() {
     this.store.pipe(
       take(1),
       select(selectIdAluno)
     ).subscribe((idAluno) => {
       this.idAluno = idAluno
     });
-  }
 
-  ngOnInit() {
     this.store.pipe(
       take(1),
       select(selectFaculdades),

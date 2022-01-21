@@ -86,8 +86,8 @@ export class AlunoEffects {
       this.actions$.pipe(
         ofType(AlunoActions.avaliarFaculdade),
         tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: true}))),
-        tap(({ idFaculdade, idAluno, avaliacao }) => {
-          this.alunoService.avaliarFaculdade(idFaculdade, idAluno, avaliacao);
+        tap(({ idFaculdade, idAluno, avaliacao, comentario }) => {
+          this.alunoService.avaliarFaculdade(idFaculdade, idAluno, avaliacao, comentario);
         })
       ),
     { dispatch: false },

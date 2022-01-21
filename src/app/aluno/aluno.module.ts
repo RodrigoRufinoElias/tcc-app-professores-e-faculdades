@@ -11,7 +11,7 @@ import { AlunoPage } from './aluno.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    AlunoPageRoutingModule
+    AlunoPageRoutingModule,
   ],
   declarations: [AlunoPage]
 })

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 import { map, take } from 'rxjs/operators';
 import { select, Store } from '@ngrx/store';
-import { combineLatest } from 'rxjs';
+import { combineLatest, forkJoin } from 'rxjs';
 
 import { AuthenticationService } from '../seguranca/autenticacao.service';
 import { Aluno } from '../models/aluno.model';
@@ -119,7 +119,7 @@ export class AlunoService {
     });
   }
 
-  avaliarFaculdade(idFaculdade: number, idAluno: number, avaliacao: number) {
+  avaliarFaculdade(idFaculdade: number, idAluno: number, avaliacao: number, comentario: string) {
     // Recupera a última avaliação da faculdade criado
     this.db.list(Entidades.AVALIACAO_FACULDADE, ref => ref.orderByChild('id').limitToLast(1)).snapshotChanges().pipe(take(1)).subscribe(res => {
       let a = res[0].payload.toJSON();
@@ -134,10 +134,11 @@ export class AlunoService {
         avaliacao,
         data: (new Date()).getTime()
       });
+
     },
     (error) => console.log('error', error),
     () => {
-      this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false}))
+      this.comentarFaculdade(idFaculdade, idAluno, comentario);
     });
   }
 
@@ -160,7 +161,7 @@ export class AlunoService {
     },
     (error) => console.log('error', error),
     () => {
-      this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false}))
+      this.store.dispatch(AlunoActions.getAvaliacoesEComentariosFaculdade({ idFaculdade }));
     });
   }
 
