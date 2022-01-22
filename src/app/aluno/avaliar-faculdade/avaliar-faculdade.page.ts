@@ -6,7 +6,6 @@ import { Subject } from 'rxjs';
 
 import { Faculdade } from 'src/app/models/faculdade.model';
 import * as AlunoActions from '../../states/aluno/actions';
-import { ComentarioFaculdade } from 'src/app/models/comentarioFaculdade';
 import {
   selectIdAluno,
   selectFaculdades,
@@ -92,5 +91,10 @@ export class AvaliarFaculdadePage implements OnInit {
     }));
 
     this.avaliou = true;
+  }
+
+  ionViewDidLeave() {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

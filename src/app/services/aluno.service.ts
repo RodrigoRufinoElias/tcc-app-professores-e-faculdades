@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
 import { map, take } from 'rxjs/operators';
 import { select, Store } from '@ngrx/store';
-import { combineLatest, forkJoin } from 'rxjs';
+import { combineLatest, timer } from 'rxjs';
 
 import { AuthenticationService } from '../seguranca/autenticacao.service';
 import { Aluno } from '../models/aluno.model';
@@ -12,7 +12,6 @@ import { Entidades } from '../models/entidades.enum';
 import * as AlunoActions from '../states/aluno/actions';
 import { selectAluno } from '../states/aluno/selectors';
 import { PerfilService } from './perfil.service';
-import * as ConfiguracaoGeralActions from '../states/geral/actions';
 import { AvaliacaoFaculdade } from '../models/avaliacaoFaculdade';
 import { ComentarioFaculdade } from '../models/comentarioFaculdade';
 
@@ -162,6 +161,7 @@ export class AlunoService {
     (error) => console.log('error', error),
     () => {
       this.store.dispatch(AlunoActions.getAvaliacoesEComentariosFaculdade({ idFaculdade }));
+      timer(300).subscribe(() => history.back());
     });
   }
 

@@ -1,4 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { select, Store } from '@ngrx/store';
+import { take } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+
+import { Faculdade } from 'src/app/models/faculdade.model';
+import * as AlunoActions from '../../states/aluno/actions';
+import {
+  selectIdAluno,
+  selectFaculdades
+} from '../../states/aluno/selectors';
 
 @Component({
   selector: 'app-comentar-faculdade',
@@ -7,16 +18,41 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ComentarFaculdadePage implements OnInit {
 
-  constructor() { }
+  faculdade: Faculdade;
+  idFaculdade: number;
+  idAluno: number;
+  comentario: string = '';
+
+  unsubscribe$: Subject<any> = new Subject();
+
+  constructor(
+    private actRoute: ActivatedRoute,
+    private store: Store<any>
+  ) {
+    this.idFaculdade = Number(this.actRoute.snapshot.params.idFaculdade);
+
+    this.store.pipe(
+      take(1),
+      select(selectIdAluno)
+    ).subscribe((idAluno) => {
+      this.idAluno = idAluno
+    });
+  }
 
   ngOnInit() {
+    this.store.pipe(
+      take(1),
+      select(selectFaculdades),
+    ).subscribe(faculdades => {
+      [this.faculdade] = faculdades.filter(f => f.id == this.idFaculdade);
+    });
   }
 
   comentar() {
-    // this.store.dispatch(AlunoActions.comentarFaculdade({
-    //   idFaculdade: this.idFaculdade,
-    //   idAluno: this.idAluno,
-    //   comentario: 'comentário teste'
-    // }));
+    this.store.dispatch(AlunoActions.comentarFaculdade({
+      idFaculdade: this.idFaculdade,
+      idAluno: this.idAluno,
+      comentario: this.comentario
+    }));
   }
 }
