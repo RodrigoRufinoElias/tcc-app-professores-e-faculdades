@@ -6,6 +6,8 @@ import { Faculdade } from 'src/app/models/faculdade.model';
 import { Professor } from 'src/app/models/professor.model';
 import { AvaliacaoFaculdade } from 'src/app/models/avaliacaoFaculdade';
 import { ComentarioFaculdade } from 'src/app/models/comentarioFaculdade';
+import { AvaliacaoProfessor } from 'src/app/models/avaliacaoProfessor';
+import { ComentarioProfessor } from 'src/app/models/comentarioProfessor';
 
 export const alunoFeatureKey = 'aluno-state';
 
@@ -13,16 +15,22 @@ export interface AlunoState {
   idFirebase: string;
   aluno: Aluno;
   faculdades: Faculdade[];
-  avaliacoes: AvaliacaoFaculdade[];
-  comentarios: ComentarioFaculdade[];
+  avaliacoesFaculdade: AvaliacaoFaculdade[];
+  comentariosFaculdade: ComentarioFaculdade[];
+  professores: Professor[];
+  avaliacoesProfessores: AvaliacaoProfessor[];
+  comentariosProfessores: ComentarioProfessor[];
 }
 
 export const initialState: AlunoState = {
   idFirebase: undefined,
   aluno: null,
   faculdades: [],
-  avaliacoes: [],
-  comentarios: [],
+  avaliacoesFaculdade: [],
+  comentariosFaculdade: [],
+  professores: [],
+  avaliacoesProfessores: [],
+  comentariosProfessores: [],
 };
 
 export const alunoReduce: ActionReducer<AlunoState, Action> = createReducer(
@@ -38,13 +46,17 @@ export const alunoReduce: ActionReducer<AlunoState, Action> = createReducer(
   })),
   on(Actions.getAvaliacoesEComentariosFaculdade, (state) => ({
     ...state,
-    avaliacoes: [],
-    comentarios: []
+    avaliacoesFaculdade: [],
+    comentariosFaculdade: []
   })),
-  on(Actions.getAvaliacoesEComentariosFaculdadeSuccess, (state, { avaliacoes, comentarios }) => ({
+  on(Actions.getAvaliacoesEComentariosFaculdadeSuccess, (state, { avaliacoesFaculdade, comentariosFaculdade }) => ({
     ...state,
-    avaliacoes,
-    comentarios
+    avaliacoesFaculdade,
+    comentariosFaculdade
+  })),
+  on(Actions.getProfessoresAlunoSuccess, (state, { professores }) => ({
+    ...state,
+    professores
   })),
   on(Actions.clearState, (state) => ({
     ...state,

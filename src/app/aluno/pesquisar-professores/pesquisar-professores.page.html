@@ -1,9 +1,37 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>pesquisar-professores</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="aluno"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Pesquisar seus Professores</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-searchbar
+          [(ngModel)]="textoFiltro"
+          mode="ios"
+          searchIcon="search-outline"
+          placeholder="Filtrar Professores">
+        </ion-searchbar>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-label>Lista de Professores</ion-label>
+        <ion-list lines="full">
+          <ion-item *ngFor="let professor of listaProfessores | filtro: textoFiltro">
+            <ion-label>{{professor.nome }}</ion-label>
+            <ion-button color="primary" fill="clear" (click)="detalharProfessor(professor.id)">
+              <ion-icon slot="icon-only" name="search"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
 
+  </ion-grid>
 </ion-content>

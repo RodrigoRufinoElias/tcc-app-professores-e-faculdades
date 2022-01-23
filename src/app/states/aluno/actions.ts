@@ -27,7 +27,7 @@ export const getAvaliacoesEComentariosFaculdade = createAction(
 
 export const getAvaliacoesEComentariosFaculdadeSuccess = createAction(
   '[Aluno] sucesso ao obter as avaliações e comentários de uma faculdade.',
-  props<{ avaliacoes: AvaliacaoFaculdade[], comentarios: ComentarioFaculdade[] }>(),
+  props<{ avaliacoesFaculdade: AvaliacaoFaculdade[], comentariosFaculdade: ComentarioFaculdade[] }>(),
 );
 
 export const avaliarFaculdade = createAction(
@@ -38,6 +38,13 @@ export const avaliarFaculdade = createAction(
 export const comentarFaculdade = createAction(
   '[Aluno] comentar sobre a faculdade.',
   props<{ idFaculdade: number, idAluno: number, comentario: string }>(),
+);
+
+export const getProfessoresAluno = createAction('[Aluno] obtém os professores do aluno logado.');
+
+export const getProfessoresAlunoSuccess = createAction(
+  '[Aluno] sucesso ao obter os professores do aluno logado.',
+  props<{ professores: Professor[] }>(),
 );
 
 export const clearState = createAction('[Aluno] limpa o state.');

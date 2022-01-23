@@ -44,7 +44,7 @@ export class AlunoPage implements OnInit {
   }
 
   pesquisarProfessores() {
-    this.router.navigate(['aluno/pesquisar-frofessores']);
+    this.router.navigate(['aluno/pesquisar-professores']);
   }
 
   editarDados() {

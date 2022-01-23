@@ -10,8 +10,8 @@ import { ComentarioFaculdade } from 'src/app/models/comentarioFaculdade';
 import {
   selectIdAluno,
   selectFaculdades,
-  selectAvaliacoes,
-  selectComentarios
+  selectAvaliacoesFaculdade,
+  selectComentariosFaculdade
 } from '../../states/aluno/selectors';
 
 @Component({
@@ -56,7 +56,7 @@ export class DetalharFaculdadePage {
 
       this.store.pipe(
         takeUntil(this.unsubscribe$),
-        select(selectAvaliacoes)
+        select(selectAvaliacoesFaculdade)
       ).subscribe((avaliacoes) => {
         if (avaliacoes.length > 0) {
           this.verificarAvaliacaoGeral(avaliacoes);
@@ -66,7 +66,7 @@ export class DetalharFaculdadePage {
 
       this.store.pipe(
         takeUntil(this.unsubscribe$),
-        select(selectComentarios)
+        select(selectComentariosFaculdade)
       ).subscribe((comentarios) => {
         if (comentarios.length > 0) {
           this.comentarios = comentarios;

@@ -105,4 +105,25 @@ export class AlunoEffects {
       ),
     { dispatch: false },
   );
+
+  getProfessoresAluno$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AlunoActions.getProfessoresAluno),
+        tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: true}))),
+        tap(() => {
+          this.alunoService.listarProfessores();
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  getProfessoresAlunoSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AlunoActions.getProfessoresAlunoSuccess),
+        tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false})))
+      ),
+    { dispatch: false },
+  );
 }

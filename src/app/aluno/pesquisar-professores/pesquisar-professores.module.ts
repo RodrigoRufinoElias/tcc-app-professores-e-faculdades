@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
 
 import { PesquisarProfessoresPageRoutingModule } from './pesquisar-professores-routing.module';
-
 import { PesquisarProfessoresPage } from './pesquisar-professores.page';
+import { FiltroPipe } from '../../utils/filtro.pipe';
 
 @NgModule({
   imports: [
@@ -15,6 +14,6 @@ import { PesquisarProfessoresPage } from './pesquisar-professores.page';
     IonicModule,
     PesquisarProfessoresPageRoutingModule
   ],
-  declarations: [PesquisarProfessoresPage]
+  declarations: [PesquisarProfessoresPage, FiltroPipe]
 })
 export class PesquisarProfessoresPageModule {}

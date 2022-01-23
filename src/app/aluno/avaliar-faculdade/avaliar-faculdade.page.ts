@@ -9,8 +9,8 @@ import * as AlunoActions from '../../states/aluno/actions';
 import {
   selectIdAluno,
   selectFaculdades,
-  selectAvaliacoes,
-  selectComentarios
+  selectAvaliacoesFaculdade,
+  selectComentariosFaculdade
 } from '../../states/aluno/selectors';
 
 @Component({
@@ -53,7 +53,7 @@ export class AvaliarFaculdadePage implements OnInit {
 
       this.store.pipe(
         takeUntil(this.unsubscribe$),
-        select(selectAvaliacoes)
+        select(selectAvaliacoesFaculdade)
       ).subscribe((avaliacoes) => {
         if (avaliacoes.length > 0) {
           let [avaliacao] = avaliacoes.filter(a => a.idAluno === this.idAluno);
@@ -67,7 +67,7 @@ export class AvaliarFaculdadePage implements OnInit {
 
       this.store.pipe(
         takeUntil(this.unsubscribe$),
-        select(selectComentarios)
+        select(selectComentariosFaculdade)
       ).subscribe((comentarios) => {
         if (comentarios.length > 0) {
           // Busca o 1º comentário do aluno logado (comentário de avaliação)
