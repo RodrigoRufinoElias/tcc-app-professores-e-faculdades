@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { select, Store } from '@ngrx/store';
 import { take } from 'rxjs/operators';
-import { Subject } from 'rxjs';
 
 import { Faculdade } from 'src/app/models/faculdade.model';
 import * as AlunoActions from '../../states/aluno/actions';
@@ -22,8 +21,6 @@ export class ComentarFaculdadePage implements OnInit {
   idFaculdade: number;
   idAluno: number;
   comentario: string = '';
-
-  unsubscribe$: Subject<any> = new Subject();
 
   constructor(
     private actRoute: ActivatedRoute,

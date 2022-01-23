@@ -108,7 +108,7 @@ export class DetalharFaculdadePage {
   }
 
   verComentario(idComentario) {
-    this.router.navigate([`aluno/visualizar-faculdade/${idComentario}`]);
+    this.router.navigate([`aluno/visualizar-comentario/${this.idFaculdade}/${idComentario}`]);
   }
 
   ionViewDidLeave() {

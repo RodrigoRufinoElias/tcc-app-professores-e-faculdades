@@ -1,0 +1,14 @@
+.cabecalho {
+  font-size: 20px;
+}
+
+.label-text{
+  color: #3880ff;
+  font-style: italic;
+  font-size: 18px;
+
+  &.aviso {
+    color: orangered;
+    font-size: 14px;
+  }
+}

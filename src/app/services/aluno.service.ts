@@ -163,8 +163,15 @@ export class AlunoService {
     });
   }
 
-  visualizarComentarioFaculdade() {
+  obterPerfilAlunoDoComentario(idAluno: number) {
+    this.db.list(Entidades.ALUNO, ref => ref.orderByChild('id').equalTo(idAluno))
+    .snapshotChanges().pipe(take(1)).subscribe(res => {
+      let a = res[0].payload.toJSON();
+      a['$key'] = res[0].key;
+      const aluno = a as Aluno;
 
+      this.store.dispatch(AlunoActions.getAlunoDoComentarioSuccess({ aluno }))
+    });
   }
 
   listarProfessores() {

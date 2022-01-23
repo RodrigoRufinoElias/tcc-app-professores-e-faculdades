@@ -40,6 +40,16 @@ export const comentarFaculdade = createAction(
   props<{ idFaculdade: number, idAluno: number, comentario: string }>(),
 );
 
+export const getAlunoDoComentario = createAction(
+  '[Aluno] obtém o perfil do aluno do comentário.',
+  props<{ idAluno: number }>(),
+);
+
+export const getAlunoDoComentarioSuccess = createAction(
+  '[Aluno] sucesso ao obter o perfil do aluno do comentário.',
+  props<{ aluno: Aluno }>(),
+);
+
 export const getProfessoresAluno = createAction('[Aluno] obtém os professores do aluno logado.');
 
 export const getProfessoresAlunoSuccess = createAction(

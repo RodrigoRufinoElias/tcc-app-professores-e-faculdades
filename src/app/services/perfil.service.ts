@@ -52,7 +52,7 @@ export class PerfilService {
     return this.authService.isLoggedIn ? this.authService.userEmail : null;
   }
 
-  procurarAluno(email: string) {
+  procurarAlunoPorEmail(email: string) {
     this.perfilAlunoListRef = this.db.list(Entidades.ALUNO, ref => ref.orderByChild('email').equalTo(email));
     return this.perfilAlunoListRef;
   }

@@ -27,7 +27,7 @@ export class ConfiguracaoGeralEffects {
         ofType(ConfiguracaoGeralActions.verificarPerfilExistente),
         tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: true}))),
         tap(({ email }) => {
-          this.perfilService.procurarAluno(email).snapshotChanges().subscribe(res => {
+          this.perfilService.procurarAlunoPorEmail(email).snapshotChanges().subscribe(res => {
             if(res.length >= 1) {
               this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false}));
               this.store.dispatch(ConfiguracaoGeralActions.setPerfil({emailLogado: email, tipoUsuarioLogado: TipoUsuario.ALUNO}));

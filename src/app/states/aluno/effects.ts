@@ -7,7 +7,6 @@ import { Router } from '@angular/router';
 import * as AlunoActions from './actions';
 import * as ConfiguracaoGeralActions from '../geral/actions';
 import { AlunoService } from 'src/app/services/aluno.service';
-import { TipoUsuario } from 'src/app/models/usuario.model';
 
 @Injectable({ providedIn: 'root' })
 export class AlunoEffects {
@@ -122,6 +121,27 @@ export class AlunoEffects {
     () =>
       this.actions$.pipe(
         ofType(AlunoActions.getProfessoresAlunoSuccess),
+        tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false})))
+      ),
+    { dispatch: false },
+  );
+
+  getAlunoDoComentario$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AlunoActions.getAlunoDoComentario),
+        tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: true}))),
+        tap(({ idAluno }) => {
+          this.alunoService.obterPerfilAlunoDoComentario(idAluno);
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  getAlunoDoComentarioSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AlunoActions.getAlunoDoComentarioSuccess),
         tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false})))
       ),
     { dispatch: false },

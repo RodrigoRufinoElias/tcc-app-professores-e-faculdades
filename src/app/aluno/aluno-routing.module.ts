@@ -37,7 +37,7 @@ const routes: Routes = [
     loadChildren: () => import('./pesquisar-professores/pesquisar-professores.module').then( m => m.PesquisarProfessoresPageModule)
   },
   {
-    path: 'visualizar-comentario/:idComentario',
+    path: 'visualizar-comentario/:idFaculdade/:idComentario',
     loadChildren: () => import('./visualizar-comentario/visualizar-comentario.module').then( m => m.VisualizarComentarioPageModule)
   }
 ];
