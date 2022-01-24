@@ -13,11 +13,11 @@ import * as AlunoActions from '../../states/aluno/actions';
 import { Aluno } from 'src/app/models/aluno.model';
 
 @Component({
-  selector: 'app-visualizar-comentario',
-  templateUrl: './visualizar-comentario.page.html',
-  styleUrls: ['./visualizar-comentario.page.scss'],
+  selector: 'app-visualizar-comentario-faculdade',
+  templateUrl: './visualizar-comentario-faculdade.page.html',
+  styleUrls: ['./visualizar-comentario-faculdade.page.scss'],
 })
-export class VisualizarComentarioPage implements OnInit {
+export class VisualizarComentarioFaculdadePage implements OnInit {
 
   idComentario: number;
   comentario: ComentarioFaculdade;
