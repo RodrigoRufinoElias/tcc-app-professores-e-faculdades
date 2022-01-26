@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { IonicModule } from '@ionic/angular';
+import { IonicRatingComponentModule } from 'ionic-rating-component';
 
 import { AvaliarProfessorPageRoutingModule } from './avaliar-professor-routing.module';
-
 import { AvaliarProfessorPage } from './avaliar-professor.page';
 
 @NgModule({
@@ -13,7 +12,8 @@ import { AvaliarProfessorPage } from './avaliar-professor.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    AvaliarProfessorPageRoutingModule
+    AvaliarProfessorPageRoutingModule,
+    IonicRatingComponentModule
   ],
   declarations: [AvaliarProfessorPage]
 })

@@ -13,7 +13,7 @@ const routes: Routes = [
     loadChildren: () => import('./avaliar-faculdade/avaliar-faculdade.module').then( m => m.AvaliarFaculdadePageModule)
   },
   {
-    path: 'avaliar-professor',
+    path: 'avaliar-professor/:idProfessor',
     loadChildren: () => import('./avaliar-professor/avaliar-professor.module').then( m => m.AvaliarProfessorPageModule)
   },
   {
@@ -37,11 +37,11 @@ const routes: Routes = [
     loadChildren: () => import('./pesquisar-professores/pesquisar-professores.module').then( m => m.PesquisarProfessoresPageModule)
   },
   {
-    path: 'visualizar-comentario-faculdade/:idFaculdade/:idComentario',
+    path: 'visualizar-comentario-faculdade/:idComentario',
     loadChildren: () => import('./visualizar-comentario-faculdade/visualizar-comentario-faculdade.module').then( m => m.VisualizarComentarioFaculdadePageModule)
   },
   {
-    path: 'visualizar-comentario-professor',
+    path: 'visualizar-comentario-professor/:idComentario',
     loadChildren: () => import('./visualizar-comentario-professor/visualizar-comentario-professor.module').then( m => m.VisualizarComentarioProfessorPageModule)
   }
 ];

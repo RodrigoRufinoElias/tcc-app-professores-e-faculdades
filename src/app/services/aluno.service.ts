@@ -289,8 +289,8 @@ export class AlunoService {
     },
     (error) => console.log('error', error),
     () => {
-      // this.store.dispatch(AlunoActions.getAvaliacoesEComentariosProfessor({ idProfessor }));
-      // timer(300).subscribe(() => history.back());
+      this.store.dispatch(AlunoActions.getAvaliacoesEComentariosProfessor({ idProfessor }));
+      timer(300).subscribe(() => history.back());
     });
   }
 
