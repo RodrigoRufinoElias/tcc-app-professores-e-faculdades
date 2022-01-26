@@ -40,6 +40,16 @@ export const selectProfessores = createSelector(
   (c) => c.professores,
 );
 
+export const selectAvaliacoesProfessor = createSelector(
+  alunoState,
+  (c) => c.avaliacoesProfessor,
+);
+
+export const selectComentariosProfessor = createSelector(
+  alunoState,
+  (c) => c.comentariosProfessor,
+);
+
 export const selectAlunoDoComentario = createSelector(
   alunoState,
   (c) => c.alunoDoComentario,

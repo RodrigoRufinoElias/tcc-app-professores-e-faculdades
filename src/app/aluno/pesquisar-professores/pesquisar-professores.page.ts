@@ -29,7 +29,7 @@ export class PesquisarProfessoresPage implements OnInit {
     ).subscribe(professores => this.listaProfessores = professores);
   }
 
-  detalharFaculdade(id: number) {
+  detalharProfessor(id: number) {
     this.router.navigate([`aluno/detalhar-professor/${id}`]);
   }
 }

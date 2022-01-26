@@ -18,8 +18,8 @@ export interface AlunoState {
   avaliacoesFaculdade: AvaliacaoFaculdade[];
   comentariosFaculdade: ComentarioFaculdade[];
   professores: Professor[];
-  avaliacoesProfessores: AvaliacaoProfessor[];
-  comentariosProfessores: ComentarioProfessor[];
+  avaliacoesProfessor: AvaliacaoProfessor[];
+  comentariosProfessor: ComentarioProfessor[];
   alunoDoComentario: Aluno;
 }
 
@@ -30,8 +30,8 @@ export const initialState: AlunoState = {
   avaliacoesFaculdade: [],
   comentariosFaculdade: [],
   professores: [],
-  avaliacoesProfessores: [],
-  comentariosProfessores: [],
+  avaliacoesProfessor: [],
+  comentariosProfessor: [],
   alunoDoComentario: null,
 };
 
@@ -59,6 +59,16 @@ export const alunoReduce: ActionReducer<AlunoState, Action> = createReducer(
   on(Actions.getProfessoresAlunoSuccess, (state, { professores }) => ({
     ...state,
     professores
+  })),
+  on(Actions.getAvaliacoesEComentariosProfessor, (state) => ({
+    ...state,
+    avaliacoesProfessor: [],
+    comentariosProfessor: []
+  })),
+  on(Actions.getAvaliacoesEComentariosProfessorSuccess, (state, { avaliacoesProfessor, comentariosProfessor }) => ({
+    ...state,
+    avaliacoesProfessor,
+    comentariosProfessor
   })),
   on(Actions.getAlunoDoComentario, (state) => ({
     ...state,

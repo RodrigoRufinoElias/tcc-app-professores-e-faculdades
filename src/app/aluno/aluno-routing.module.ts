@@ -25,7 +25,7 @@ const routes: Routes = [
     loadChildren: () => import('./detalhar-faculdade/detalhar-faculdade.module').then( m => m.DetalharFaculdadePageModule)
   },
   {
-    path: 'detalhar-professor',
+    path: 'detalhar-professor/:idProfessor',
     loadChildren: () => import('./detalhar-professor/detalhar-professor.module').then( m => m.DetalharProfessorPageModule)
   },
   {

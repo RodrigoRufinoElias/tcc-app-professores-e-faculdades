@@ -126,6 +126,52 @@ export class AlunoEffects {
     { dispatch: false },
   );
 
+  getAvaliacoesEComentariosProfessor$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AlunoActions.getAvaliacoesEComentariosProfessor),
+        tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: true}))),
+        tap(({ idProfessor }) => {
+          this.alunoService.listarAvaliacoesEComentariosProfessor(idProfessor);
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  getAvaliacoesEComentariosProfessorSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AlunoActions.getAvaliacoesEComentariosProfessorSuccess),
+        tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false})))
+      ),
+    { dispatch: false },
+  );
+
+  avaliarProfessor$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AlunoActions.avaliarProfessor),
+        tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: true}))),
+        tap(({ idProfessor, idAluno, avaliacao, comentario, grauBomRuim }) => {
+          this.alunoService.avaliarProfessor(idProfessor, idAluno, avaliacao, comentario, grauBomRuim);
+        })
+      ),
+    { dispatch: false },
+  );
+
+  comentarProfessor$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AlunoActions.comentarProfessor),
+        tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: true}))),
+        tap(({ idProfessor, idAluno, comentario, grauBomRuim }) => {
+          this.alunoService.comentarProfessor(idProfessor, idAluno, comentario, grauBomRuim);
+        }),
+        tap(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false}))),
+      ),
+    { dispatch: false },
+  );
+
   getAlunoDoComentario$ = createEffect(
     () =>
       this.actions$.pipe(
