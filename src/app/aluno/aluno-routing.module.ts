@@ -21,6 +21,10 @@ const routes: Routes = [
     loadChildren: () => import('./comentar-faculdade/comentar-faculdade.module').then( m => m.ComentarFaculdadePageModule)
   },
   {
+    path: 'comentar-professor/:idProfessor',
+    loadChildren: () => import('./comentar-professor/comentar-professor.module').then( m => m.ComentarProfessorPageModule)
+  },
+  {
     path: 'detalhar-faculdade/:idFaculdade',
     loadChildren: () => import('./detalhar-faculdade/detalhar-faculdade.module').then( m => m.DetalharFaculdadePageModule)
   },

@@ -75,7 +75,7 @@ export class AvaliarProfessorPage implements OnInit {
       ).subscribe((comentarios) => {
         if (comentarios.length > 0) {
           // Busca o 1º comentário do aluno logado (comentário de avaliação)
-          let [comentarioDoAlunoOrdenado] = [...comentarios.filter(c => c.idAluno === this.idAluno)].sort((a, b) => b.id - a.id);
+          let [comentarioDoAlunoOrdenado] = [...comentarios.filter(c => c.idAluno === this.idAluno)].sort((a, b) => a.id - b.id);
           this.comentario = comentarioDoAlunoOrdenado.comentario;
           this.grauBomRuim = comentarioDoAlunoOrdenado.grauBomRuim;
         }

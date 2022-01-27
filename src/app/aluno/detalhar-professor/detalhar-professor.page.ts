@@ -133,7 +133,7 @@ export class DetalharProfessorPage {
   }
 
   verComentario(idComentario) {
-    this.router.navigate([`aluno/visualizar-comentario-professor/${this.idProfessor}/${idComentario}`]);
+    this.router.navigate([`aluno/visualizar-comentario-professor/${idComentario}`]);
   }
 
   ionViewDidLeave() {
