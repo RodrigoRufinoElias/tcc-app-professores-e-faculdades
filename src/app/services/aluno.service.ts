@@ -293,8 +293,4 @@ export class AlunoService {
       timer(300).subscribe(() => history.back());
     });
   }
-
-  visualizarComentarioProfessor() {
-
-  }
 }
