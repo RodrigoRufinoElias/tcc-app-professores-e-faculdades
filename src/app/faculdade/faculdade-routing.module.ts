@@ -13,12 +13,8 @@ const routes: Routes = [
     loadChildren: () => import('./avaliacoes-comentarios/avaliacoes-comentarios.module').then( m => m.AvaliacoesComentariosPageModule)
   },
   {
-    path: 'responder-comentario',
+    path: 'responder-comentario/:idComentario',
     loadChildren: () => import('./responder-comentario/responder-comentario.module').then( m => m.ResponderComentarioPageModule)
-  },
-  {
-    path: 'visualizar-comentario',
-    loadChildren: () => import('./visualizar-comentario/visualizar-comentario.module').then( m => m.VisualizarComentarioPageModule)
   }
 ];
 

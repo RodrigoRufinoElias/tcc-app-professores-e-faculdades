@@ -15,10 +15,6 @@ const routes: Routes = [
   {
     path: 'responder-comentario',
     loadChildren: () => import('./responder-comentario/responder-comentario.module').then( m => m.ResponderComentarioPageModule)
-  },
-  {
-    path: 'visualizar-comentario',
-    loadChildren: () => import('./visualizar-comentario/visualizar-comentario.module').then( m => m.VisualizarComentarioPageModule)
   }
 ];
 

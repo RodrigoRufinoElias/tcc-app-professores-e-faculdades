@@ -76,8 +76,8 @@ export class AvaliarProfessorPage implements OnInit {
         if (comentarios.length > 0) {
           // Busca o 1º comentário do aluno logado (comentário de avaliação)
           let [comentarioDoAlunoOrdenado] = [...comentarios.filter(c => c.idAluno === this.idAluno)].sort((a, b) => a.id - b.id);
-          this.comentario = comentarioDoAlunoOrdenado.comentario;
-          this.grauBomRuim = comentarioDoAlunoOrdenado.grauBomRuim;
+          this.comentario = comentarioDoAlunoOrdenado ? comentarioDoAlunoOrdenado.comentario : '';
+          this.grauBomRuim = comentarioDoAlunoOrdenado ? comentarioDoAlunoOrdenado.grauBomRuim : 5;
         }
       });
     });

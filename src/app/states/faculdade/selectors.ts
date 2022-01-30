@@ -14,3 +14,18 @@ export const selectIdFirebaseFaculdade = createSelector(
   faculdadeState,
   (c) => c.idFirebase,
 );
+
+export const selectAvaliacoesFaculdade = createSelector(
+  faculdadeState,
+  (c) => c.avaliacoesFaculdade,
+);
+
+export const selectComentariosFaculdade = createSelector(
+  faculdadeState,
+  (c) => c.comentariosFaculdade,
+);
+
+export const selectAlunoDoComentario = createSelector(
+  faculdadeState,
+  (c) => c.alunoDoComentario,
+);

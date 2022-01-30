@@ -40,7 +40,7 @@ export class FaculdadePage implements OnInit {
   }
 
   comentariosAvaliacoes() {
-    // this.router.navigate(['faculdade/pesquisarProfessores']);
+    this.router.navigate(['faculdade/avaliacoes-comentarios']);
   }
 
   editarDados() {

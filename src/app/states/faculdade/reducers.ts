@@ -1,19 +1,27 @@
 import { ActionReducer, Action, createReducer, on } from '@ngrx/store';
 
-import { Faculdade } from 'src/app/models/faculdade.model';
-import { TipoUsuario } from 'src/app/models/usuario.model';
 import * as Actions from './actions';
+import { Faculdade } from 'src/app/models/faculdade.model';
+import { Aluno } from 'src/app/models/aluno.model';
+import { AvaliacaoFaculdade } from 'src/app/models/avaliacaoFaculdade';
+import { ComentarioFaculdade } from 'src/app/models/comentarioFaculdade';
 
 export const faculdadeFeatureKey = 'faculdade-state';
 
 export interface FaculdadeState {
   idFirebase: string;
   faculdade: Faculdade;
+  avaliacoesFaculdade: AvaliacaoFaculdade[];
+  comentariosFaculdade: ComentarioFaculdade[];
+  alunoDoComentario: Aluno;
 }
 
 export const initialState: FaculdadeState = {
   idFirebase: undefined,
-  faculdade: null
+  faculdade: null,
+  avaliacoesFaculdade: [],
+  comentariosFaculdade: [],
+  alunoDoComentario: null
 };
 
 export const faculdadeReduce: ActionReducer<FaculdadeState, Action> = createReducer(
@@ -22,6 +30,24 @@ export const faculdadeReduce: ActionReducer<FaculdadeState, Action> = createRedu
     ...state,
     idFirebase,
     faculdade
+  })),
+  on(Actions.getAvaliacoesEComentariosFaculdade, (state) => ({
+    ...state,
+    avaliacoesFaculdade: [],
+    comentariosFaculdade: []
+  })),
+  on(Actions.getAvaliacoesEComentariosFaculdadeSuccess, (state, { avaliacoesFaculdade, comentariosFaculdade }) => ({
+    ...state,
+    avaliacoesFaculdade,
+    comentariosFaculdade
+  })),
+  on(Actions.getAlunoDoComentario, (state) => ({
+    ...state,
+    alunoDoComentario: null
+  })),
+  on(Actions.getAlunoDoComentarioSuccess, (state, { aluno }) => ({
+    ...state,
+    alunoDoComentario: aluno
   })),
   on(Actions.clearState, (state) => ({
     ...state,

@@ -1,25 +1,30 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/compat/database';
-import { take } from 'rxjs/operators';
-import { select, Store } from '@ngrx/store';
+import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
+import { map, take } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { combineLatest, timer } from 'rxjs';
 
 import { AuthenticationService } from '../seguranca/autenticacao.service';
 import { Aluno } from '../models/aluno.model';
-import { Professor } from '../models/professor.model';
 import { Faculdade } from '../models/faculdade.model';
 import { Entidades } from '../models/entidades.enum';
 import * as FaculdadeActions from '../states/faculdade/actions';
-import { selectPerfil } from '../states/geral/selectors';
+import { PerfilService } from './perfil.service';
+import { ComentarioFaculdade } from '../models/comentarioFaculdade';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FaculdadeService {
 
+  avaliacoesAlunoFaculdadeListRef: AngularFireList<any>;
+  comentariosAlunoFaculdadeListRef: AngularFireList<any>;
+
   constructor(
     private db: AngularFireDatabase,
     private authService: AuthenticationService,
-    private store: Store<any>
+    private store: Store<any>,
+    private perfilService: PerfilService,
   ) {}
 
   get emailLogado() {
@@ -36,15 +41,58 @@ export class FaculdadeService {
     });
   }
 
-  detalharAvaliacaoComentarios() {
+  listarAvaliacoesEComentariosFaculdade(idFaculdade: number) {
+    let listaAvaliacaoRef = this.obterAvaliacoesFaculdade(idFaculdade);
+    let listaComentarioRef = this.obterComentariosFaculdade(idFaculdade);
 
+    combineLatest([
+      listaAvaliacaoRef.snapshotChanges().pipe(
+        map(actions => this.perfilService.mapSnapshotChanges(actions))
+      ),
+      listaComentarioRef.snapshotChanges().pipe(
+        map(actions => this.perfilService.mapSnapshotChanges(actions))
+      )
+    ]).pipe(
+      take(1),
+      map(([listaAvaliacoes, listaComentarios]) => {
+        return {listaAvaliacoes, listaComentarios};
+      })
+    ).subscribe(res => {
+      this.store.dispatch(FaculdadeActions.getAvaliacoesEComentariosFaculdadeSuccess({
+        avaliacoesFaculdade: res.listaAvaliacoes,
+        comentariosFaculdade: res.listaComentarios
+      }));
+    });
   }
 
-  responderComentario() {
-
+  obterAvaliacoesFaculdade(idFaculdade: number) {
+    this.avaliacoesAlunoFaculdadeListRef = this.db.list(Entidades.AVALIACAO_FACULDADE, ref => ref.orderByChild('idFaculdade').equalTo(idFaculdade));
+    return this.avaliacoesAlunoFaculdadeListRef;
   }
 
-  adicionarComentarioGeral() {
+  obterComentariosFaculdade(idFaculdade: number) {
+    this.comentariosAlunoFaculdadeListRef = this.db.list(Entidades.COMENTARIO_FACULDADE, ref => ref.orderByChild('idFaculdade').equalTo(idFaculdade));
+    return this.comentariosAlunoFaculdadeListRef;
+  }
 
+  obterPerfilAlunoDoComentario(idAluno: number) {
+    this.db.list(Entidades.ALUNO, ref => ref.orderByChild('id').equalTo(idAluno))
+    .snapshotChanges().pipe(take(1)).subscribe(res => {
+      let a = res[0].payload.toJSON();
+      a['$key'] = res[0].key;
+      const aluno = a as Aluno;
+
+      this.store.dispatch(FaculdadeActions.getAlunoDoComentarioSuccess({ aluno }))
+    });
+  }
+
+  responderComentario(resposta: ComentarioFaculdade) {
+    this.db.object(`/${Entidades.COMENTARIO_FACULDADE}/${resposta['key']}`).update({
+      respostaFaculdade: resposta.respostaFaculdade
+    }).
+    finally(() => {
+      this.store.dispatch(FaculdadeActions.getAvaliacoesEComentariosFaculdade({ idFaculdade: resposta.idFaculdade }));
+      timer(300).subscribe(() => history.back());
+    });
   }
 }

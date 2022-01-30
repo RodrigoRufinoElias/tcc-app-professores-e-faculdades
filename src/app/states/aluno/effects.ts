@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { tap } from 'rxjs/operators';
-import { Router } from '@angular/router';
 
 import * as AlunoActions from './actions';
 import * as ConfiguracaoGeralActions from '../geral/actions';
@@ -13,8 +12,7 @@ export class AlunoEffects {
   constructor(
     private actions$: Actions,
     private store: Store<any>,
-    private alunoService: AlunoService,
-    private router: Router
+    private alunoService: AlunoService
   ) {}
 
   getPerfilAluno$ = createEffect(
