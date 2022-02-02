@@ -40,7 +40,7 @@ export class ProfessorPage implements OnInit {
   }
 
   comentariosAvaliacoes() {
-    // this.router.navigate(['professor/pesquisarProfessores']);
+    this.router.navigate(['professor/avaliacoes-comentarios']);
   }
 
   editarDados() {

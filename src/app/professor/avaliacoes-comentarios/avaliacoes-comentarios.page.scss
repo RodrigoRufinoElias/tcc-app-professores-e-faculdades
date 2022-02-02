@@ -1,0 +1,71 @@
+.icon-avaliacao-geral {
+  text-align: center;
+
+  ion-icon {
+    font-size: 60px;
+    padding-top: 10px;
+
+    &.star {
+      color: gold;
+    }
+
+    &.star-half {
+      color: orange;
+    }
+
+    &.star-out {
+      color: orangered;
+    }
+  }
+}
+
+.label-avaliacao-geral {
+  font-size: 20px;
+  text-align: center;
+
+  b {
+    font-size: 30px;
+  }
+}
+
+.label-carrasco {
+  padding-left: 5%;
+  color: #eb445a;
+}
+
+.label-bonzinho {
+  padding-right: 5%;
+  text-align: end;
+  color: #3880ff;
+}
+
+.label-text {
+  font-size: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.progress-grauBomRuim {
+  padding: 10px 5% 20px 5%;
+}
+
+.cabecalho-comentarios {
+  font-size: 20px;
+}
+
+.lista-comentarios {
+  overflow: hidden;
+  overflow-y: scroll;
+  max-height: calc(100vh - 330px);
+  min-height: 100px;
+}
+
+.sem-comentarios {
+  padding-left: 5%;
+}
+
+.botao-comentar {
+  position: absolute;
+  bottom: 10px;
+  width: 97%;
+}

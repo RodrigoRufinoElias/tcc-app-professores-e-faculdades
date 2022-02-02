@@ -14,3 +14,18 @@ export const selectIdFirebaseProfessor = createSelector(
   professorState,
   (c) => c.idFirebase,
 );
+
+export const selectAvaliacoesProfessor = createSelector(
+  professorState,
+  (c) => c.avaliacoesProfessor,
+);
+
+export const selectComentariosProfessor = createSelector(
+  professorState,
+  (c) => c.comentariosProfessor,
+);
+
+export const selectAlunoDoComentario = createSelector(
+  professorState,
+  (c) => c.alunoDoComentario,
+);
