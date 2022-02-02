@@ -1,9 +1,105 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>responder-comentario</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Visualizar Comentário</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col>
+        <ion-label class="cabecalho">Aluno que comentou</ion-label>
+      </ion-col>
+    </ion-row>
 
+    <ion-row>
+      <ion-col>
+        <ion-label class="label-text">{{ aluno ? aluno.nome : '' }}</ion-label>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-label class="cabecalho">Data do comentário</ion-label>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-label class="label-text">{{ dataComentario }}</ion-label>
+      </ion-col>
+    </ion-row>
+
+    <br>
+
+    <ion-row>
+      <ion-col class="label-carrasco" size="4">
+        <ion-label>Carrasco</ion-label>
+      </ion-col>
+
+      <ion-col class="label-text-progress" size="4">
+        <ion-label>{{ grauBomRuim }}/10</ion-label>
+      </ion-col>
+
+      <ion-col class="label-bonzinho" size="4">
+        <ion-label>Bonzinho</ion-label>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col class="progress-grauBomRuim">
+        <ion-progress-bar [value]="grauBomRuim/10" [color]="getRangeColor()"></ion-progress-bar>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-label class="cabecalho">Comentário</ion-label>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-textarea
+            rows="8"
+            disabled = "true"
+            [value]="comentario.comentario">
+          </ion-textarea>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-label class="cabecalho">Resposta do professor</ion-label>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-item>
+          <ion-textarea
+            rows="8"
+            [disabled]="professorRespondeu"
+            [(ngModel)]="respostaProfessor">
+          </ion-textarea>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+
+    <ion-row>
+      <ion-col>
+        <ion-button
+          *ngIf="!professorRespondeu"
+          [disabled]="respostaProfessor.trim().length === 0"
+          (click)="responderComentario()"
+          expand="block">
+          Responder comentário
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
