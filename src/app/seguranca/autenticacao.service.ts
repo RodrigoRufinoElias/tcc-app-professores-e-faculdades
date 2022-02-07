@@ -41,7 +41,6 @@ export class AuthenticationService {
 
   // Cadastrar usuário com email/password
   RegisterUser(email, password) {
-    this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: true}));
     return this.ngFireAuth.createUserWithEmailAndPassword(email, password)
   }
 

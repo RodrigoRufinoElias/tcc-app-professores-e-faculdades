@@ -38,8 +38,10 @@ export class RegistroPage {
     );
   }
 
-  signUp(){
+  signUp() {
     if (this.validateEmail()) {
+      this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: true}));
+
       this.authService.RegisterUser(this.email, this.password)
       .then(() => {
         this.authService.SendVerificationMail()
@@ -51,6 +53,7 @@ export class RegistroPage {
         ));
       })
       .finally(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false})));
+
     } else {
       this.store.dispatch(ConfiguracaoGeralActions.setMsgDeErro(
         { mensagemDeErro: 'E-mail inválido'}
