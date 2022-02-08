@@ -39,9 +39,6 @@ export class LoginPage {
 
   logIn() {
     if (this.validateEmail()) {
-
-      this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: true}));
-
       this.authService.SignIn(this.email, this.password)
         .then(() => {
           timer(10).subscribe(() => {
@@ -53,6 +50,7 @@ export class LoginPage {
                   mensagemDeErro: 'Email não verificado'
                 }
               ));
+              this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false}));
               return false;
             }
           });
@@ -63,8 +61,8 @@ export class LoginPage {
               mensagemDeErro: error.message
             }
           ));
-        })
-        .finally(() => this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false})));
+          this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: false}));
+        });
 
       } else {
         this.store.dispatch(ConfiguracaoGeralActions.setMsgDeErro(

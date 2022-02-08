@@ -8,19 +8,19 @@ import { ConfigPerfilPageRoutingModule } from './config-perfil-routing.module';
 
 import { ConfigPerfilPage } from './config-perfil.page';
 import { ModalListasComponent } from './modal-listas/modal-listas.component';
-import { FiltroPipe } from '../utils/filtro.pipe';
+import { SharedModule } from '../utils/shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ConfigPerfilPageRoutingModule
+    ConfigPerfilPageRoutingModule,
+    SharedModule
   ],
   declarations: [
     ConfigPerfilPage,
-    ModalListasComponent,
-    FiltroPipe
+    ModalListasComponent
   ]
 })
 export class ConfigPerfilPageModule {}

@@ -5,15 +5,16 @@ import { IonicModule } from '@ionic/angular';
 
 import { PesquisarProfessoresPageRoutingModule } from './pesquisar-professores-routing.module';
 import { PesquisarProfessoresPage } from './pesquisar-professores.page';
-import { FiltroPipe } from '../../utils/filtro.pipe';
+import { SharedModule } from '../../utils/shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    PesquisarProfessoresPageRoutingModule
+    PesquisarProfessoresPageRoutingModule,
+    SharedModule
   ],
-  declarations: [PesquisarProfessoresPage, FiltroPipe]
+  declarations: [PesquisarProfessoresPage]
 })
 export class PesquisarProfessoresPageModule {}
