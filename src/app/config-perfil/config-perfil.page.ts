@@ -188,7 +188,7 @@ export class ConfigPerfilPage {
         map(actions => this.perfilService.mapSnapshotChanges(actions))
       ).subscribe(res => {
         this.listaProfessores = [];
-        this.listaProfessoresEscolhidos = res;
+        this.listaProfessores = res;
       });
     }
   }
