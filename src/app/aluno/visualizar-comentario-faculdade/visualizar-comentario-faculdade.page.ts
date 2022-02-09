@@ -55,7 +55,7 @@ export class VisualizarComentarioFaculdadePage implements OnInit {
 
   getDataComentario(dataInMillis: number) {
     let data = new Date(dataInMillis);
-    let dia = data.getDate();
+    let dia = ('0' + data.getDate()).slice(-2);
     let mes = ('0' + (data.getMonth() + 1)).slice(-2);
     let ano = data.getFullYear();
     let hora = data.getHours();
