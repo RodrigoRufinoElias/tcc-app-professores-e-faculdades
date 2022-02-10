@@ -10,5 +10,10 @@
   &.aviso {
     color: orangered;
     font-size: 14px;
+    overflow: visible;
+    text-overflow: unset;
+    overflow-wrap: break-word;
+    white-space: normal;
+    word-break: break-word;
   }
 }
