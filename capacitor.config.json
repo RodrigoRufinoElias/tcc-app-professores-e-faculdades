@@ -1,5 +1,5 @@
 {
-	"appId": "io.ionic.starter",
+	"appId": "io.ionic.tcc.faculdades.e.professores",
 	"appName": "faculdades_e_professores",
 	"webDir": "www",
 	"bundledWebRuntime": false

@@ -146,3 +146,11 @@ Training
 Blog
 About
 Loading complete
+
+# Android and WWW files
+android
+www
+
+# VS Pro files
+.idea
+.vs
