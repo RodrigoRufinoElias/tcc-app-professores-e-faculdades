@@ -42,7 +42,10 @@ export class RegistroPage {
     if (this.validateEmail()) {
       this.store.dispatch(ConfiguracaoGeralActions.isLoading({isLoading: true}));
 
-      this.authService.RegisterUser(this.email, this.password)
+      let _email = this.email.trim().toLowerCase();
+      let _password = this.password.trim();
+
+      this.authService.RegisterUser(_email, _password)
       .then(() => {
         this.authService.SendVerificationMail()
         this.router.navigate(['email-verificacao']);
