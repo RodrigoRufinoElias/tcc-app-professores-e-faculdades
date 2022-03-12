@@ -39,11 +39,15 @@ export class LoginPage {
 
   logIn() {
     if (this.validateEmail()) {
-      this.authService.SignIn(this.email, this.password)
+
+      let _email = this.email.trim().toLowerCase();
+      let _password = this.password.trim();
+
+      this.authService.SignIn(_email.trim().toLowerCase(), _password)
         .then(() => {
           timer(10).subscribe(() => {
             if(this.authService.isEmailVerified) {
-              this.store.dispatch(ConfiguracaoGeralActions.verificarPerfilExistente({ email: this.email }));
+              this.store.dispatch(ConfiguracaoGeralActions.verificarPerfilExistente({ email: _email }));
             } else {
               this.store.dispatch(ConfiguracaoGeralActions.setMsgDeErro(
                 {
