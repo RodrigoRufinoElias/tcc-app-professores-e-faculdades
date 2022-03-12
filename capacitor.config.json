@@ -1,6 +1,6 @@
 {
-	"appId": "io.ionic.tcc.faculdades.e.professores",
-	"appName": "faculdades_e_professores",
-	"webDir": "www",
-	"bundledWebRuntime": false
+  "appId": "io.ionic.tcc.faculdades.e.professores",
+  "appName": "TCC Faculdades e Professores",
+  "webDir": "www",
+  "bundledWebRuntime": false
 }
