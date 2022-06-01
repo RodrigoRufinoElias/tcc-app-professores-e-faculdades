@@ -1,8 +1,7 @@
 {
-  "name": "faculdades_e_professores",
-  "version": "1.0.0",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "name": "professores_e_faculdades",
+  "version": "1.0.1",
+  "author": "Rodrigo Rufino Elias",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -78,5 +77,5 @@
     "ts-node": "~8.3.0",
     "typescript": "~4.2.4"
   },
-  "description": "An Ionic project"
+  "description": "Trabalho final de curso."
 }
