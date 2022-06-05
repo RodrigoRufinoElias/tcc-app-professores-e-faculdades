@@ -83,7 +83,7 @@ export class DetalharFaculdadePage {
       soma += avaliacoes[index].avaliacao;
     }
 
-    this.avaliacaoGeral = soma/avaliacoes.length;
+    this.avaliacaoGeral = Number((soma/avaliacoes.length).toFixed(2));
   }
 
   // Verifica se o aluno já avaliou essa faculdade

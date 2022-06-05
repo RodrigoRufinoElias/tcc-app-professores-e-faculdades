@@ -69,7 +69,7 @@ export class AvaliacoesComentariosPage {
       soma += avaliacoes[index].avaliacao;
     }
 
-    this.avaliacaoGeral = soma/avaliacoes.length;
+    this.avaliacaoGeral = Number((soma/avaliacoes.length).toFixed(2));
   }
 
   // Conta o grau de bom ou ruim geral dos comentários
@@ -80,7 +80,7 @@ export class AvaliacoesComentariosPage {
       soma += comentarios[index].grauBomRuim;
     }
 
-    this.grauBomRuim = soma/comentarios.length;
+    this.grauBomRuim = Number((soma/comentarios.length).toFixed(2));
   }
 
   getRangeColor() {
